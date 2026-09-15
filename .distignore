@@ -1,0 +1,12 @@
+/.git
+/.github
+/README.md
+/docs
+/.wordpress-org
+/.distignore
+/.editorconfig
+/.gitignore
+/phpcs.xml.dist
+/node_modules
+/vendor
+.DS_Store

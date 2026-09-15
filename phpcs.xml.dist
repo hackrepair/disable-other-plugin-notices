@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<ruleset name="Disable Other Plugin Notices">
+    <description>Coding standards for the Disable Other Plugin Notices plugin.</description>
+
+    <file>.</file>
+
+    <exclude-pattern>/.git/*</exclude-pattern>
+    <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
+
+    <arg name="extensions" value="php"/>
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg value="ps"/>
+
+    <config name="minimum_wp_version" value="6.7"/>
+    <config name="testVersion" value="7.4-"/>
+
+    <rule ref="WordPress">
+        <!-- This plugin follows the four-space house style used across these plugins. -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+        <exclude name="Universal.WhiteSpace.PrecisionAlignment"/>
+        <exclude name="WordPress.WhiteSpace.PrecisionAlignment"/>
+    </rule>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="disable-other-plugin-notices"/>
+        </properties>
+    </rule>
+
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array" value="dopn,DOPN"/>
+        </properties>
+    </rule>
+
+    <rule ref="PHPCompatibilityWP"/>
+</ruleset>

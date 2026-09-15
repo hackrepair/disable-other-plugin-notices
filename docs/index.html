@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Disable Other Plugin Notices — a quieter wp-admin</title>
+<meta name="description" content="Groups admin notices from other plugins and themes into one collapsed panel, while WordPress core notices stay exactly where they are.">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg: #fbfaf8;
+    --bg-alt: #f2efe9;
+    --ink: #1c1a17;
+    --ink-soft: #55504a;
+    --line: #e4ddd2;
+    --card: #ffffff;
+    --accent: #b5502e;
+    --accent-ink: #ffffff;
+    --core-notice: #2271b1;
+    --plugin-notice: #d0894f;
+    --code-bg: #efe9df;
+    --radius: 14px;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #171512;
+      --bg-alt: #1f1c18;
+      --ink: #f1ede6;
+      --ink-soft: #b8b0a4;
+      --line: #34302a;
+      --card: #201d19;
+      --accent: #e07a52;
+      --accent-ink: #1c1a17;
+      --core-notice: #6cb2ea;
+      --plugin-notice: #e0a15f;
+      --code-bg: #2a251e;
+    }
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width: 100%; }
+  [hidden]{ display: none !important; }
+  a{ color: var(--accent); }
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding-inline: 24px;
+  }
+  header.hero{
+    padding-block: 72px 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .eyebrow .dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  h1{
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .lede{
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 0 32px;
+  }
+  .cta-row{ display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 15px;
+    border: 1px solid transparent;
+  }
+  .btn.primary{ background: var(--accent); color: var(--accent-ink); }
+  .btn.ghost{ border-color: var(--line); color: var(--ink); }
+
+  section{ padding-block: 56px; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom: none; }
+  h2{ font-size: 1.6rem; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .section-lede{ color: var(--ink-soft); max-width: 62ch; margin: 0 0 36px; }
+
+  /* Demo panel mock */
+  .demo{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  }
+  .demo-toolbar{ display:flex; gap: 8px; margin-bottom: 18px; }
+  .demo-toolbar span{ width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .wp-notice{
+    border-inline-start: 4px solid var(--core-notice);
+    background: var(--bg-alt);
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .wp-notice.core::before{ content: "WordPress core · "; font-weight: 700; color: var(--core-notice); }
+  details.panel{
+    border: 1px dashed var(--plugin-notice);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    background: color-mix(in srgb, var(--plugin-notice) 8%, transparent);
+  }
+  details.panel summary{
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--plugin-notice);
+    list-style: none;
+  }
+  details.panel summary::-webkit-details-marker{ display:none; }
+  details.panel summary .count{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width: 20px; height: 20px; padding: 0 6px;
+    border-radius: 999px; background: var(--plugin-notice); color: var(--bg);
+    font-size: 12px; margin-inline-start: 8px;
+  }
+  details.panel .wp-notice{ margin-top: 12px; border-inline-start-color: var(--plugin-notice); }
+  details.panel .wp-notice::before{ content: none; }
+
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card h3{ margin: 0 0 8px; font-size: 1.05rem; }
+  .card p{ margin: 0; color: var(--ink-soft); font-size: 14px; }
+
+  ol.steps{ padding-left: 22px; }
+  ol.steps li{ margin-bottom: 10px; }
+  code, pre{
+    background: var(--code-bg);
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+  }
+  code{ padding: 2px 6px; }
+  pre{ padding: 16px; overflow-x: auto; }
+  pre code{ padding: 0; background: none; }
+
+  .faq dt{ font-weight: 600; margin-top: 18px; }
+  .faq dd{ margin: 6px 0 0; color: var(--ink-soft); }
+
+  footer{ padding-block: 40px 64px; color: var(--ink-soft); font-size: 14px; }
+  footer a{ color: var(--ink-soft); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Free · GPLv2+ · WordPress plugin</div>
+    <h1>Your dashboard, minus the marketing.</h1>
+    <p class="lede">
+      Disable Other Plugin Notices groups admin notices from other plugins and themes into
+      one collapsed panel — while WordPress core notices stay exactly where they are.
+      Nothing deleted, nothing silenced. Just tidied.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://github.com/hackrepair/disable-other-plugin-notices">View on GitHub</a>
+      <a class="btn ghost" href="#how-it-works">How it works</a>
+    </div>
+  </div>
+</header>
+
+<section id="demo">
+  <div class="wrap">
+    <h2>Before and after</h2>
+    <p class="section-lede">
+      Everything WordPress prints stays put. Everything a plugin or theme prints gets
+      folded into one line you can open when you actually want it.
+    </p>
+    <div class="demo">
+      <div class="demo-toolbar"><span></span><span></span><span></span></div>
+      <div class="wp-notice core">Your site is running an outdated version of PHP.</div>
+      <details class="panel" open>
+        <summary>Other plugin notices <span class="count">3</span></summary>
+        <div class="wp-notice">Upgrade to Pro to unlock advanced reporting.</div>
+        <div class="wp-notice">Please rate this plugin ★★★★★ — it only takes a minute!</div>
+        <div class="wp-notice">Your license key expires in 12 days.</div>
+      </details>
+      <div class="wp-notice core">Settings saved.</div>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="wrap">
+    <h2>How it decides what is a core notice</h2>
+    <p class="section-lede">
+      Most notice-hiding tools match CSS classes or scrape text — easy for a plugin to
+      dodge, and easy to catch a core notice by accident. This one asks a more direct
+      question.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <h3>1. Wait for everyone to register</h3>
+        <p>Hooks in after every plugin has had the chance to add its own admin notices, right before WordPress prints them.</p>
+      </div>
+      <div class="card">
+        <h3>2. Ask PHP, not the DOM</h3>
+        <p>Uses Reflection to find the file each notice callback was actually declared in — the source of truth, not a guess from markup.</p>
+      </div>
+      <div class="card">
+        <h3>3. Core stays, the rest moves</h3>
+        <p><code>wp-admin/</code> and <code>wp-includes/</code> callbacks are left alone. Everything else — plugins, themes, mu-plugins, drop-ins — goes in the panel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Installation</h2>
+    <p class="section-lede">Not yet on the WordPress.org repository — until then, install it directly:</p>
+    <ol class="steps">
+      <li>Download the <a href="https://github.com/hackrepair/disable-other-plugin-notices/releases">latest release</a> zip, or clone the repository.</li>
+      <li>Upload the <code>disable-other-plugin-notices</code> folder to <code>/wp-content/plugins/</code>.</li>
+      <li>Activate the plugin from the Plugins screen. Grouping is on immediately — nothing to configure.</li>
+    </ol>
+    <p>To turn grouping off for your own account, open <strong>Screen Options</strong> at the top right of any admin screen with grouped notices, clear the checkbox, and click Apply. It's a per-user setting.</p>
+  </div>
+</section>
+
+<section id="filters">
+  <div class="wrap">
+    <h2>For developers</h2>
+    <p class="section-lede">Four filters, no settings page.</p>
+    <pre><code>add_filter( 'dopn_collapse_notice', function ( $collapse, $source ) {
+    if ( false !== strpos( $source, '/plugins/my-important-plugin/' ) ) {
+        return false; // keep this one out of the panel
+    }
+    return $collapse;
+}, 10, 2 );</code></pre>
+    <p>Also available: <code>dopn_grouping_enabled</code>, <code>dopn_panel_open</code>, and <code>dopn_show_screen_option</code>. See the <a href="https://github.com/hackrepair/disable-other-plugin-notices#filters">README</a> for full signatures.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <dl class="faq">
+      <dt>Does this hide security or update notices?</dt>
+      <dd>No. Notices printed by WordPress core are never moved.</dd>
+      <dt>Will a plugin's setup wizard still work?</dt>
+      <dd>Yes — it prints a fraction of a second later, in a different spot, but its buttons and links behave exactly as before.</dd>
+      <dt>Does it work on multisite?</dt>
+      <dd>Yes. Network admin and user admin screens are handled the same way, and the per-user setting follows the user across the network.</dd>
+      <dt>What data does it store?</dt>
+      <dd>One user meta value per user who changes the setting. Nothing else. Uninstalling removes it.</dd>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Disable Other Plugin Notices is free software, GPLv2 or later.
+    <a href="https://github.com/hackrepair/disable-other-plugin-notices">Source on GitHub</a> ·
+    <a href="https://github.com/hackrepair/disable-other-plugin-notices/issues">Report an issue</a>
+  </div>
+</footer>
+
+</body>
+</html>
