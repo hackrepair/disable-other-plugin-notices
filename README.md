@@ -15,7 +15,7 @@ Notices from WordPress itself are never touched. Core update reminders, PHP vers
 
 ## Demo (Click to View on YouTube)
 
-[![Disable Other Plugin Notices demo](https://img.youtube.com/vi/6YDnso_nqvY/maxresdefault.jpg)](https://youtu.be/6YDnso_nqvY)
+[![Disable Other Plugin Notices demo](https://img.youtube.com/vi/y45eFF2J6FU/maxresdefault.jpg)](https://youtu.be/y45eFF2J6FU)
 
 *30 seconds: three other-plugin notices go from cluttering the top of the screen to one collapsed panel, leaving WordPress's own notices in place. Click to watch.*
 
