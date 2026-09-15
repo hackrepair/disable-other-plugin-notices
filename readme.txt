@@ -2,9 +2,9 @@
 Contributors: hackrepair
 Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
-Tested up to: 7.1
+Tested up to: 8.4
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,12 +70,16 @@ Yes, and this is worth knowing before you install. The plugin works with notices
 
 Yes. Network admin screens and user admin screens are handled alongside regular admin screens, and the per-user setting follows the user across the network.
 
-= Can I keep one particular notice out of the panel? =
+= Why does it say "Other plugin notices" when a notice was from a theme? =
 
-Yes, with the `dopn_collapse_notice` filter. It receives the file the notice callback was declared in, so you can leave a single plugin's notices in place:
+The wording matches what site owners call the problem. Themes print notices far less often than plugins do, and adding "and theme" to every label takes space without adding clarity. The plugin handles theme notices identically.
 
-`add_filter( 'dopn_collapse_notice', function ( $collapse, $source ) {
-    if ( false !== strpos( $source, '/plugins/my-important-plugin/' ) ) {
+= What if I want a specific notice to stay where it was? =
+
+Use the `dopn_collapse_notice` filter:
+
+`add_filter( 'dopn_collapse_notice', function( $collapse, $source, $hook, $priority ) {
+    if ( false !== strpos( $source, 'woocommerce' ) ) {
         return false;
     }
     return $collapse;
@@ -86,6 +90,12 @@ Yes, with the `dopn_collapse_notice` filter. It receives the file the notice cal
 One user meta value per user who changes the setting, recording whether grouping is on. Nothing else is written to the database. Uninstalling the plugin deletes that value for every user.
 
 == Changelog ==
+
+= 1.0.2 =
+* Fixed: Supported single-quoted HTML class attributes when marking notices with `below-h2` so core's relocation script skips them.
+* Enhanced: Wrapped notice callback replay in `Throwable` error handling to prevent broken third-party notices from crashing the admin or breaking output buffers.
+* Enhanced: Added canonical path resolution for symlinked WordPress roots, Bedrock deployments, and Composer-managed plugins.
+* Code Quality: Moved the PHPCS output escaping suppression comment above the echo statement for compatibility with static code analyzers.
 
 = 1.0.1 =
 * Fixed: a grouped notice could be pulled back out of the panel by WordPress core's own admin JavaScript, which relocates any `.notice`, `.updated`, or `.error` element to just below the page title on screens that have a `.wp-header-end` marker (nearly every list and edit screen). The panel's notice count was still correct; only the visible list was affected. Notices are now marked so core's relocation script skips them, leaving their own styling and dismiss buttons untouched.
@@ -98,6 +108,9 @@ One user meta value per user who changes the setting, recording whether grouping
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Adds single-quote attribute compatibility for core notice relocation, resilience against broken third-party callbacks, and symlink path resolution.
 
 = 1.0.1 =
 Fixes grouped notices sometimes reappearing outside the panel due to WordPress core's own notice-relocation script. Update recommended.

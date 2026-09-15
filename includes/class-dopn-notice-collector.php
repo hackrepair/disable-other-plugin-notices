@@ -306,8 +306,12 @@ class DOPN_Notice_Collector {
             return false;
         }
 
+        $real_file = realpath( $file );
+        $file      = wp_normalize_path( false !== $real_file ? $real_file : $file );
+
         if ( '' === $this->plugin_path ) {
-            $this->plugin_path = wp_normalize_path( DOPN_PLUGIN_DIR );
+            $real_plugin       = realpath( DOPN_PLUGIN_DIR );
+            $this->plugin_path = trailingslashit( wp_normalize_path( false !== $real_plugin ? $real_plugin : DOPN_PLUGIN_DIR ) );
         }
 
         if ( 0 === strpos( $file, $this->plugin_path ) ) {
@@ -332,11 +336,15 @@ class DOPN_Notice_Collector {
      */
     private function core_paths() {
         if ( empty( $this->core_paths ) ) {
-            $abspath = trailingslashit( wp_normalize_path( ABSPATH ) );
+            $real_abspath = realpath( ABSPATH );
+            $abspath      = trailingslashit( wp_normalize_path( false !== $real_abspath ? $real_abspath : ABSPATH ) );
+
+            $real_wpinc = realpath( ABSPATH . WPINC );
+            $wpinc      = trailingslashit( wp_normalize_path( false !== $real_wpinc ? $real_wpinc : ( ABSPATH . WPINC ) ) );
 
             $this->core_paths = array(
                 $abspath . 'wp-admin/',
-                trailingslashit( wp_normalize_path( ABSPATH . WPINC ) ),
+                $wpinc,
             );
         }
 
@@ -364,7 +372,19 @@ class DOPN_Notice_Collector {
 
             ob_start();
 
-            call_user_func( $entry['function'] );
+            try {
+                call_user_func( $entry['function'] );
+            } catch ( Throwable $e ) {
+                while ( ob_get_level() > $level ) {
+                    ob_end_clean();
+                }
+
+                if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                    error_log( sprintf( 'DOPN notice callback error: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) );
+                }
+
+                continue;
+            }
 
             /*
              * Buffers are unwound back to the level they were at before the
@@ -429,7 +449,8 @@ class DOPN_Notice_Collector {
              * filtering it here would corrupt other people's notices, and no
              * request data is added to this output.
              */
-            echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Re-emitting verbatim captured third-party markup.
+            echo $markup;
         }
 
         echo '</div>';
@@ -453,15 +474,17 @@ class DOPN_Notice_Collector {
      * it invisible to that relocation script.
      *
      * @since 1.0.1
+     * @since 1.0.2 Support single-quoted HTML class attributes.
      *
      * @param string $markup Captured notice markup.
      * @return string Markup with `below-h2` added where core would otherwise match.
      */
     private function guard_against_core_relocation( $markup ) {
         return (string) preg_replace_callback(
-            '/(<[a-z][a-z0-9]*\b[^>]*\bclass\s*=\s*")([^"]*)(")/i',
+            '/(<[a-z][a-z0-9]*\b[^>]*\bclass\s*=\s*(["\']))(.*?)\2/i',
             static function ( $matches ) {
-                $classes = $matches[2];
+                $classes   = $matches[3];
+                $delimiter = $matches[2];
 
                 if ( ! preg_match( '/(?:^|\s)(?:notice|updated|error)(?:\s|$)/', $classes ) ) {
                     return $matches[0];
@@ -471,7 +494,7 @@ class DOPN_Notice_Collector {
                     return $matches[0];
                 }
 
-                return $matches[1] . $classes . ' below-h2' . $matches[3];
+                return $matches[1] . $classes . ' below-h2' . $delimiter;
             },
             $markup
         );
