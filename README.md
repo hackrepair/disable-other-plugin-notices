@@ -32,7 +32,7 @@ The panel's markup is also marked so WordPress core's own `common.js` notice-rel
 
 ## Installation
 
-The plugin isn't on the WordPress.org repository yet (see [Roadmap](#roadmap) below). Until then:
+The plugin isn't on the WordPress.org repository yet. Until then:
 
 1. Download the [latest release](../../releases) zip, or clone this repository.
 2. Upload the `disable-other-plugin-notices` folder to `/wp-content/plugins/`.
@@ -79,11 +79,9 @@ Yes. Network admin and user admin screens are handled alongside regular admin sc
 **What data does the plugin store?**
 One user meta value per user who changes the setting. Nothing else is written to the database. Uninstalling the plugin deletes that value for every user.
 
-## Roadmap
+## Contributors
 
-- [ ] Submit to the WordPress.org plugin repository
-- [ ] Plugin banner, icon, and screenshots
-- [ ] Real compatibility test run against the latest WordPress release
+**[Jim Walker](https://hackrepair.com)** — The Hack Repair Guy — author and maintainer.
 
 ## Contributing
 
