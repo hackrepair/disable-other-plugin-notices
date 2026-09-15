@@ -176,6 +176,17 @@
 
   footer{ padding-block: 40px 64px; color: var(--ink-soft); font-size: 14px; }
   footer a{ color: var(--ink-soft); text-decoration: underline; }
+
+  .video-frame{
+    max-width: 720px;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 32px rgba(0,0,0,.12);
+  }
+  .video-frame video{ display:block; width: 100%; height: auto; background: #000; }
+  .video-caption{ text-align:center; color: var(--ink-soft); font-size: 14px; margin-top: 14px; }
 </style>
 </head>
 <body>
@@ -195,6 +206,17 @@
     </div>
   </div>
 </header>
+
+<section id="video">
+  <div class="wrap">
+    <div class="video-frame">
+      <video controls preload="metadata" poster="videos/demo-poster.jpg">
+        <source src="videos/demo.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="video-caption">30 seconds: three other-plugin notices go from cluttering the top of the screen to one collapsed panel.</p>
+  </div>
+</section>
 
 <section id="demo">
   <div class="wrap">

@@ -12,7 +12,13 @@ Every plugin thinks its notice is the important one. Open `wp-admin` on a busy s
 
 Notices from WordPress itself are never touched. Core update reminders, PHP version warnings, Site Health results, and settings-saved messages keep their normal position at the top of the screen. That distinction is the whole point of the plugin: the notices that matter for running the site stay in front of you, and the marketing sits in a drawer.
 
-📖 **[See it in action / full documentation →](https://hackrepair.github.io/disable-other-plugin-notices/)**
+## Demo
+
+<video src="docs/videos/demo.mp4" controls poster="docs/videos/demo-poster.jpg" width="100%"></video>
+
+*Grouping three other-plugin notices into one panel, leaving WordPress's own notices in place.*
+
+📖 **[Full documentation →](https://hackrepair.github.io/disable-other-plugin-notices/)**
 
 ## How it decides what is a core notice
 
@@ -81,7 +87,7 @@ One user meta value per user who changes the setting. Nothing else is written to
 
 ## Contributing
 
-Issues and pull requests are welcome. Please run `phpcs` (config included as `phpcs.xml.dist`) before submitting a change.
+Issues and pull requests are welcome.
 
 ## License
 
