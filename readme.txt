@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 8.3
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,9 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 
 == Changelog ==
 
+= 2.1.0 =
+* Fixed: some plugins print a promotional banner directly into the in_admin_header hook instead of admin_notices, specifically so it renders above the notice area where a grouping plugin would not see it (for example, Elementor's "Go Pro" banner on the Plugins screen). This plugin now applies the same attribution it already uses for notices to in_admin_header itself, so those banners are grouped too.
+
 = 2.0.0 =
 * Added: Automatic update checks against this plugin's GitHub releases, so the Plugins screen now shows an "update available" notice and one-click update, the same as a WordPress.org plugin.
 * Documentation: Listed the `dopn_show_screen_option` filter under "For developers" (it has existed since 1.0.0 but was missing from this list).
@@ -117,6 +120,9 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.1.0 =
+Groups promotional banners that some plugins print via in_admin_header instead of the normal notice hooks (for example, Elementor's "Go Pro" banner), which previously stayed visible even with grouping on.
 
 = 2.0.0 =
 Adds automatic update checks against GitHub releases. After this update, future releases can be installed with the normal one-click WordPress updater instead of a manual re-upload.

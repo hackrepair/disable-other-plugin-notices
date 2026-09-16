@@ -15,7 +15,17 @@ defined( 'ABSPATH' ) || exit;
  * never touched, so core update, PHP version, and Site Health notices keep their
  * normal position at the top of the screen.
  *
+ * The same attribution is also applied to in_admin_header itself, not just the
+ * four notice hooks. Some plugins print a promotional banner straight into
+ * in_admin_header instead of admin_notices, specifically because it renders
+ * earlier, above the notice area, where a grouping plugin would otherwise never
+ * see it. Since this class already runs on in_admin_header at priority 0 to
+ * catch notices before WordPress prints them, it is well placed to also catch
+ * banners hooked to that same action at a later priority, using the identical
+ * core-path exemption so nothing WordPress itself prints there is touched.
+ *
  * @since 1.0.0
+ * @since 2.1.0 Also captures third-party callbacks on in_admin_header itself.
  */
 class DOPN_Notice_Collector {
 
@@ -139,9 +149,14 @@ class DOPN_Notice_Collector {
      * Removes third-party notice callbacks before WordPress runs them.
      *
      * Runs on in_admin_header, which fires after every plugin has registered its
-     * notices and before WordPress prints them.
+     * notices and before WordPress prints them. Because this method is itself a
+     * priority-0 callback on in_admin_header, the scan it starts also covers the
+     * rest of that same action -- including any later-priority callback still
+     * queued to run on it -- alongside the admin_notices-family hooks that fire
+     * afterward.
      *
      * @since 1.0.0
+     * @since 2.1.0 The scan now also covers in_admin_header itself.
      *
      * @return void
      */
@@ -170,17 +185,27 @@ class DOPN_Notice_Collector {
     /**
      * Lists the notice hooks that apply to the current admin context.
      *
+     * in_admin_header is included unconditionally -- unlike the notices hooks
+     * it is not split by admin context, and it fires early enough that this
+     * method is called from inside it (see capture()). Scanning it here, before
+     * admin_notices and all_admin_notices, is what lets a banner hooked to
+     * in_admin_header at a later priority than this class's own listener get
+     * detached before it ever prints.
+     *
      * @since 1.0.0
+     * @since 2.1.0 Added in_admin_header.
      *
      * @return array Hook names, in the order WordPress fires them.
      */
     private function notice_hooks() {
+        $hooks = array( 'in_admin_header' );
+
         if ( is_network_admin() ) {
-            $hooks = array( 'network_admin_notices' );
+            $hooks[] = 'network_admin_notices';
         } elseif ( is_user_admin() ) {
-            $hooks = array( 'user_admin_notices' );
+            $hooks[] = 'user_admin_notices';
         } else {
-            $hooks = array( 'admin_notices' );
+            $hooks[] = 'admin_notices';
         }
 
         $hooks[] = 'all_admin_notices';
