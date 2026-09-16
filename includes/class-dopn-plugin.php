@@ -47,6 +47,22 @@ final class DOPN_Plugin {
     private $booted = false;
 
     /**
+     * GitHub-based update checker.
+     *
+     * @since 2.0.0
+     * @var DOPN_Updater|null
+     */
+    private $updater = null;
+
+    /**
+     * Whether boot_updates() has already run.
+     *
+     * @since 2.0.0
+     * @var bool
+     */
+    private $updates_booted = false;
+
+    /**
      * Returns the shared instance.
      *
      * @since 1.0.0
@@ -93,5 +109,28 @@ final class DOPN_Plugin {
      */
     public function collector() {
         return $this->collector;
+    }
+
+    /**
+     * Registers the GitHub-based update checker.
+     *
+     * Deliberately NOT gated by is_admin() -- WordPress's own update-check
+     * and auto-update machinery runs on cron, where is_admin() is false.
+     * Gating this the same way boot() is gated would silently break
+     * update checks and auto-updates.
+     *
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function boot_updates() {
+        if ( $this->updates_booted ) {
+            return;
+        }
+
+        $this->updates_booted = true;
+
+        $this->updater = new DOPN_Updater();
+        $this->updater->init();
     }
 }

@@ -2,9 +2,9 @@
 Contributors: hackrepair
 Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
-Tested up to: 8.4
+Tested up to: 8.3
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,11 +34,12 @@ It does not delete notices, dismiss them on your behalf, write to other plugins'
 
 = For developers =
 
-Three filters are available:
+Four filters are available:
 
 * `dopn_grouping_enabled` - override the per-user setting.
 * `dopn_collapse_notice` - keep an individual notice in its normal position.
 * `dopn_panel_open` - render the panel expanded instead of collapsed.
+* `dopn_show_screen_option` - suppress the Screen Options checkbox on a specific screen.
 
 == Installation ==
 
@@ -89,7 +90,15 @@ Use the `dopn_collapse_notice` filter:
 
 One user meta value per user who changes the setting, recording whether grouping is on. Nothing else is written to the database. Uninstalling the plugin deletes that value for every user.
 
+= How do updates work? =
+
+This plugin is not distributed on the WordPress.org repository, so it checks its own GitHub releases instead. When a new version is published there, the Plugins screen shows an "update available" notice and offers a one-click update, the same as any WordPress.org plugin. The only outbound request this adds is the periodic check against GitHub for a newer release; nothing about your site's content, users, or configuration is sent.
+
 == Changelog ==
+
+= 2.0.0 =
+* Added: Automatic update checks against this plugin's GitHub releases, so the Plugins screen now shows an "update available" notice and one-click update, the same as a WordPress.org plugin.
+* Documentation: Listed the `dopn_show_screen_option` filter under "For developers" (it has existed since 1.0.0 but was missing from this list).
 
 = 1.0.2 =
 * Fixed: Supported single-quoted HTML class attributes when marking notices with `below-h2` so core's relocation script skips them.
@@ -108,6 +117,9 @@ One user meta value per user who changes the setting, recording whether grouping
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+Adds automatic update checks against GitHub releases. After this update, future releases can be installed with the normal one-click WordPress updater instead of a manual re-upload.
 
 = 1.0.2 =
 Adds single-quote attribute compatibility for core notice relocation, resilience against broken third-party callbacks, and symlink path resolution.

@@ -193,7 +193,7 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow"><span class="dot"></span> Free · GPLv2+ · WordPress 6.7–8.4 · PHP 7.4+</div>
+    <div class="eyebrow"><span class="dot"></span> Free · GPLv2+ · WordPress 6.7–8.3 · PHP 7.4+</div>
     <h1>Your WordPress dashboard, minus the marketing.</h1>
     <p class="lede">
       Disable Other Plugin Notices groups admin notices from other plugins and themes into
@@ -201,7 +201,7 @@
       Nothing deleted, nothing silenced. Just tidied.
     </p>
     <div class="cta-row">
-      <a class="btn primary" href="https://github.com/hackrepair/disable-other-plugin-notices/releases/latest">Download v1.0.2</a>
+      <a class="btn primary" href="https://github.com/hackrepair/disable-other-plugin-notices/releases/latest">Download v2.0.0</a>
       <a class="btn ghost" href="https://github.com/hackrepair/disable-other-plugin-notices">View on GitHub</a>
       <a class="btn ghost" href="#how-it-works">How it works</a>
     </div>
@@ -271,13 +271,14 @@
 <section id="install">
   <div class="wrap">
     <h2>Installation</h2>
-    <p class="section-lede">Not yet on the WordPress.org repository — until then, install it directly:</p>
+    <p class="section-lede">Not on the WordPress.org repository — install it directly:</p>
     <ol class="steps">
-      <li>Download the <a href="https://github.com/hackrepair/disable-other-plugin-notices/releases/latest">latest release (v1.0.2)</a> zip, or clone the repository.</li>
+      <li>Download the <a href="https://github.com/hackrepair/disable-other-plugin-notices/releases/latest">latest release (v2.0.0)</a> zip, or clone the repository.</li>
       <li>Upload the <code>disable-other-plugin-notices</code> folder to <code>/wp-content/plugins/</code>.</li>
       <li>Activate the plugin from the Plugins screen. Grouping is on immediately — nothing to configure.</li>
     </ol>
     <p>To turn grouping off for your own account, open <strong>Screen Options</strong> at the top right of any admin screen with grouped notices, clear the checkbox, and click Apply. It's a per-user setting.</p>
+    <p>From here on, updates show up on the Plugins screen the normal way: the plugin checks this repository's releases and offers a one-click update, just like a WordPress.org plugin.</p>
   </div>
 </section>
 
@@ -307,6 +308,8 @@
       <dd>Yes. Network admin and user admin screens are handled the same way, and the per-user setting follows the user across the network.</dd>
       <dt>What data does it store?</dt>
       <dd>One user meta value per user who changes the setting. Nothing else. Uninstalling removes it.</dd>
+      <dt>How do updates work if it's not on WordPress.org?</dt>
+      <dd>The plugin checks this repository's releases for a newer version. When one is published, the Plugins screen shows the usual "update available" notice and one-click update. The only outbound request this adds is that periodic check — no site content, users, or configuration is sent.</dd>
     </dl>
   </div>
 </section>

@@ -5,7 +5,7 @@
 [![License: GPL v2+](https://img.shields.io/badge/license-GPLv2%2B-blue.svg)](LICENSE)
 [![Requires PHP: 7.4+](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net/)
 [![Requires WordPress: 6.7+](https://img.shields.io/badge/WordPress-6.7%2B-21759b.svg)](https://wordpress.org/)
-[![Tested up to: 8.4](https://img.shields.io/badge/Tested%20up%20to-8.4-21759b.svg)](https://wordpress.org/)
+[![Tested up to: 8.3](https://img.shields.io/badge/Tested%20up%20to-8.3-21759b.svg)](https://wordpress.org/)
 
 Every plugin thinks its notice is the important one. Open `wp-admin` on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
@@ -33,7 +33,7 @@ The panel's markup is also marked so WordPress core's own `common.js` notice-rel
 
 ## Installation
 
-The plugin isn't on the WordPress.org repository yet. Until then:
+The plugin isn't on the WordPress.org repository. Instead:
 
 1. Download the [latest release](../../releases) zip, or clone this repository.
 2. Upload the `disable-other-plugin-notices` folder to `/wp-content/plugins/`.
@@ -42,9 +42,13 @@ The plugin isn't on the WordPress.org repository yet. Until then:
 
 To turn grouping off for your own account, open the **Screen Options** tab at the top right of any admin screen that has grouped notices, clear the checkbox, and click **Apply**. The setting is per user, so one administrator switching it off doesn't change what anyone else sees.
 
+## Updates
+
+Since the plugin isn't on WordPress.org, it checks this repository's [releases](../../releases) directly. When a new version is published here, the Plugins screen shows the normal "update available" notice and offers a one-click update, exactly like a WordPress.org plugin — no manual re-upload needed after the first install.
+
 ## What it does not do
 
-It does not delete notices, dismiss them on your behalf, write to other plugins' options, phone home, collect analytics, add a menu item, add a settings page, add an upsell, or display a notice of its own. It runs only in `wp-admin` and does nothing on the front end.
+It does not delete notices, dismiss them on your behalf, write to other plugins' options, collect analytics, add a menu item, add a settings page, add an upsell, or display a notice of its own. It runs only in `wp-admin` and does nothing on the front end. The only outbound request it makes is the periodic update check against this repository, covered in [Updates](#updates) above; nothing about your site's content, users, or configuration is included in it.
 
 ## Filters
 
