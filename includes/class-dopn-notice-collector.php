@@ -26,6 +26,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  * @since 2.1.0 Also captures third-party callbacks on in_admin_header itself.
+ * @since 2.2.0 Pairs with a client-side watcher for banners a plugin builds
+ *              and inserts with JavaScript instead of printing through a
+ *              notice hook -- see dopn-banner-watcher.js.
  */
 class DOPN_Notice_Collector {
 
@@ -87,6 +90,7 @@ class DOPN_Notice_Collector {
     public function init() {
         add_action( 'in_admin_header', array( $this, 'capture' ), 0 );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
 
     /**
@@ -143,6 +147,91 @@ class DOPN_Notice_Collector {
             array(),
             DOPN_VERSION
         );
+    }
+
+    /**
+     * Loads the client-side banner watcher.
+     *
+     * Covers promo banners that a plugin builds and inserts with its own
+     * JavaScript after the page has loaded, rather than printing through a
+     * WordPress action hook. See dopn-banner-watcher.js for why the PHP-side
+     * collector above cannot see this kind of banner at all.
+     *
+     * @since 2.2.0
+     *
+     * @return void
+     */
+    public function enqueue_scripts() {
+        $user_id  = get_current_user_id();
+        $selectors = $this->late_banner_selectors();
+
+        if ( ! $user_id || empty( $selectors ) ) {
+            return;
+        }
+
+        wp_enqueue_script(
+            'dopn-banner-watcher',
+            DOPN_PLUGIN_URL . 'assets/js/dopn-banner-watcher.js',
+            array(),
+            DOPN_VERSION,
+            true
+        );
+
+        wp_localize_script(
+            'dopn-banner-watcher',
+            'dopnBannerWatcher',
+            array(
+                'groupingEnabled' => self::is_enabled_for_user( $user_id ),
+                'selectors'       => array_values( $selectors ),
+                'strings'         => array(
+                    'label'     => __( 'Other plugin notices', 'disable-other-plugin-notices' ),
+                    'singular'  => __( '%s notice from another plugin or theme', 'disable-other-plugin-notices' ),
+                    'plural'    => __( '%s notices from other plugins and themes', 'disable-other-plugin-notices' ),
+                ),
+            )
+        );
+    }
+
+    /**
+     * Lists the CSS selectors the client-side watcher looks for.
+     *
+     * Kept as an explicit allowlist rather than a keyword or class-name
+     * heuristic. Guessing at what a "promo banner" looks like from its
+     * markup risks relocating something that only resembles one -- the same
+     * reason the PHP-side collector attributes by callback source file
+     * instead of by inspecting notice text. Selectors are added here only
+     * once a real banner has been confirmed to bypass the hook-based
+     * collector, the way Elementor's page-title banner did in 2.2.0.
+     *
+     * @since 2.2.0
+     *
+     * @return array Non-empty, de-duplicated CSS selector strings.
+     */
+    private function late_banner_selectors() {
+        $defaults = array(
+            // Elementor's "Go Pro, Go Limitless" banner: built by
+            // e-conversion-banner.min.js and inserted next to the page
+            // title (.wrap h1/h2) rather than printed by a notice hook.
+            '#e-conversion-banner',
+        );
+
+        /**
+         * Filters the CSS selectors the client-side banner watcher matches.
+         *
+         * @since 2.2.0
+         *
+         * @param array $selectors CSS selector strings.
+         */
+        $selectors = (array) apply_filters( 'dopn_js_late_banner_selectors', $defaults );
+
+        $selectors = array_filter(
+            array_unique( $selectors ),
+            static function ( $selector ) {
+                return is_string( $selector ) && '' !== trim( $selector );
+            }
+        );
+
+        return $selectors;
     }
 
     /**

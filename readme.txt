@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 8.3
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,10 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 
 == Changelog ==
 
+= 2.2.0 =
+* Added: A lightweight client-side watcher that catches promo banners a plugin builds and inserts with its own JavaScript after the page has loaded, instead of printing them through a WordPress action hook. Elementor's "Go Pro, Go Limitless" banner turned out to be exactly this case: its markup is assembled and inserted by e-conversion-banner.min.js next to the page title, not printed via in_admin_header as the banner's PHP registration suggested, which is why the 2.1.0 fix below did not catch it. This banner is now grouped like any other.
+* For developers: Added the `dopn_js_late_banner_selectors` filter to add more CSS selectors for this client-side watcher to catch.
+
 = 2.1.0 =
 * Fixed: some plugins print a promotional banner directly into the in_admin_header hook instead of admin_notices, specifically so it renders above the notice area where a grouping plugin would not see it (for example, Elementor's "Go Pro" banner on the Plugins screen). This plugin now applies the same attribution it already uses for notices to in_admin_header itself, so those banners are grouped too.
 
@@ -120,6 +124,9 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.2.0 =
+Catches promo banners built and inserted by a plugin's own JavaScript after the page loads (Elementor's "Go Pro" banner on the Plugins screen is one of these) which the hook-based grouping in 2.1.0 could not see.
 
 = 2.1.0 =
 Groups promotional banners that some plugins print via in_admin_header instead of the normal notice hooks (for example, Elementor's "Go Pro" banner), which previously stayed visible even with grouping on.

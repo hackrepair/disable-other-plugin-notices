@@ -80,6 +80,15 @@
     margin: 10px 12px;
 }
 
+/*
+ * Applied by dopn-banner-watcher.js to anything it relocates client-side.
+ * A JS-inserted promo banner rarely carries the notice/updated/error classes
+ * above, so it needs its own margin rule to sit consistently inside the list.
+ */
+.dopn-notices__list > .dopn-notices__item {
+    margin: 10px 12px;
+}
+
 @media screen and ( max-width: 782px ) {
     .dopn-notices {
         margin: 5px 10px 12px;
