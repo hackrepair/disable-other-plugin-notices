@@ -2,9 +2,9 @@
 Contributors: hackrepair
 Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
-Tested up to: 8.3
+Tested up to: 8.3.0
 Requires PHP: 7.4
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,7 +94,17 @@ One user meta value per user who changes the setting, recording whether grouping
 
 This plugin is not distributed on the WordPress.org repository, so it checks its own GitHub releases instead. When a new version is published there, the Plugins screen shows an "update available" notice and offers a one-click update, the same as any WordPress.org plugin. The only outbound request this adds is the periodic check against GitHub for a newer release; nothing about your site's content, users, or configuration is sent.
 
+= How can I suggest improvements or report bugs? =
+
+Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
+
 == Changelog ==
+
+= 2.2.1 =
+* Added: A branded header image for the WordPress View Details screen in standard and Retina sizes.
+* Changed: Compatibility metadata now reports WordPress 8.3.0 exactly instead of the update checker's 8.3.999 fallback.
+* Documentation: Added an FAQ contact for suggesting improvements or reporting bugs, with an obfuscated email link.
+* Documentation: Standardized PHP requirement displays on `Requires PHP: 7.4`.
 
 = 2.2.0 =
 * Added: A lightweight client-side watcher that catches promo banners a plugin builds and inserts with its own JavaScript after the page has loaded, instead of printing them through a WordPress action hook. Elementor's "Go Pro, Go Limitless" banner turned out to be exactly this case: its markup is assembled and inserted by e-conversion-banner.min.js next to the page title, not printed via in_admin_header as the banner's PHP registration suggested, which is why the 2.1.0 fix below did not catch it. This banner is now grouped like any other.
@@ -124,6 +134,9 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.2.1 =
+Adds the branded View Details header and improves compatibility and support information.
 
 = 2.2.0 =
 Catches promo banners built and inserted by a plugin's own JavaScript after the page loads (Elementor's "Go Pro" banner on the Plugins screen is one of these) which the hook-based grouping in 2.1.0 could not see.
