@@ -8,6 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+use YahnisElsts\PluginUpdateChecker\v5p7\Vcs\Api;
 
 /**
  * Points WordPress at GitHub releases for this plugin's updates.
@@ -60,7 +61,7 @@ final class DOPN_Updater {
 		$api = $this->checker->getVcsApi();
 
 		if ( $api && method_exists( $api, 'enableReleaseAssets' ) ) {
-			$api->enableReleaseAssets( self::ASSET_PATTERN );
+			$api->enableReleaseAssets( self::ASSET_PATTERN, Api::REQUIRE_RELEASE_ASSETS );
 		}
 	}
 

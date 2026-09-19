@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 8.3.0
 Requires PHP: 7.4
-Stable tag: 2.2.1
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,9 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 
 == Changelog ==
 
+= 2.3.0 =
+* Fixed: GitHub updates now require a matching uploaded release ZIP instead of falling back to GitHub's source archive, which has an incompatible plugin folder name.
+
 = 2.2.1 =
 * Added: A branded header image for the WordPress View Details screen in standard and Retina sizes.
 * Changed: Compatibility metadata now reports WordPress 8.3.0 exactly instead of the update checker's 8.3.999 fallback.
@@ -134,6 +137,9 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.3.0 =
+Requires the correctly packaged GitHub release ZIP for one-click updates.
 
 = 2.2.1 =
 Adds the branded View Details header and improves compatibility and support information.
