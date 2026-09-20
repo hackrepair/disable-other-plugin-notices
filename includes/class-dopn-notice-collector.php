@@ -183,7 +183,7 @@ class DOPN_Notice_Collector {
 
         wp_enqueue_script(
             'dopn-banner-watcher',
-            DOPN_PLUGIN_URL . 'assets/js/dopn-banner-watcher-2.4.0.js',
+            DOPN_PLUGIN_URL . 'assets/js/dopn-banner-watcher-2.4.1.js',
             array(),
             DOPN_VERSION,
             true

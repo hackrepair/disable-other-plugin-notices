@@ -1,5 +1,5 @@
 /**
- * jsdom-based tests for assets/js/dopn-banner-watcher-2.4.0.js.
+ * jsdom-based tests for assets/js/dopn-banner-watcher-2.4.1.js.
  *
  * Mirrors the PHP test suite's approach: build the exact DOM shapes the
  * script has to deal with in real WordPress admin pages, run the real
@@ -17,7 +17,7 @@ const path = require( 'path' );
 const { JSDOM } = require( 'jsdom' );
 
 const SCRIPT_PATH = process.argv[ 2 ] ||
-	path.join( __dirname, '..', '..', 'assets', 'js', 'dopn-banner-watcher-2.4.0.js' );
+	path.join( __dirname, '..', '..', 'assets', 'js', 'dopn-banner-watcher-2.4.1.js' );
 
 const scriptSource = fs.readFileSync( SCRIPT_PATH, 'utf8' );
 

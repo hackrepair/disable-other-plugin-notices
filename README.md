@@ -5,7 +5,7 @@
 [![License: GPL v2+](https://img.shields.io/badge/license-GPLv2%2B-blue.svg)](LICENSE)
 [![Requires PHP: 7.4](https://img.shields.io/badge/Requires%20PHP-7.4-777bb4.svg)](https://www.php.net/)
 [![Requires WordPress: 6.7+](https://img.shields.io/badge/WordPress-6.7%2B-21759b.svg)](https://wordpress.org/)
-[![Tested up to: 8.3.0](https://img.shields.io/badge/Tested%20up%20to-8.3.0-21759b.svg)](https://wordpress.org/)
+[![Tested up to: 7.1](https://img.shields.io/badge/Tested%20up%20to-7.1-21759b.svg)](https://wordpress.org/)
 
 Every plugin thinks its notice is the important one. Open `wp-admin` on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
@@ -44,7 +44,7 @@ To turn grouping off for your own account, open the **Screen Options** tab at th
 
 ## Updates
 
-Since the plugin isn't on WordPress.org, it checks this repository's [releases](../../releases) directly. When a new version is published here, the Plugins screen shows the normal "update available" notice and offers a one-click update, exactly like a WordPress.org plugin — no manual re-upload needed after the first install.
+Since the plugin isn't on WordPress.org, it checks this repository's [releases](../../releases) directly. When a new version is published here with a ZIP named `disable-other-plugin-notices.<version>.zip`, the Plugins screen shows the normal "update available" notice and offers a one-click update. Releases without a matching uploaded ZIP are skipped.
 
 ## What it does not do
 

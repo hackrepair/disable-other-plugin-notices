@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,12 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 
 == Changelog ==
 
+= 2.4.1 =
+* Fixed: Update checks now use only published GitHub releases with a matching uploaded ZIP; they never fall back to tag or branch source archives.
+* Fixed: A release is skipped when its ZIP filename does not match the release version.
+* Corrected: WordPress compatibility metadata now matches the version tested on Zendogs (7.1).
+* Packaging: Required updater parser files are now included in the Git repository as well as the release ZIP.
+
 = 2.4.0 =
 * Changed: Eligible notice callbacks now run on their original hook, with their original arguments and order; only their rendered markup moves to the panel.
 * Added: The original callback as the optional fifth argument to `dopn_collapse_notice`, allowing a confirmed alert to stay visible without exempting every notice from its plugin.
@@ -116,7 +122,7 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 * Fixed: The notice count stays accurate when a late JavaScript banner joins a panel containing inline style or script markup; the screen-reader count updates too.
 
 = 2.3.0 =
-* Fixed: GitHub updates now require a matching uploaded release ZIP instead of falling back to GitHub's source archive, which has an incompatible plugin folder name.
+* Changed: Release lookup required a matching uploaded ZIP. Tag and branch source-archive fallback remained possible until the 2.4.1 fix.
 
 = 2.2.1 =
 * Added: A branded header image for the WordPress View Details screen in standard and Retina sizes.
@@ -153,11 +159,14 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 
 == Upgrade Notice ==
 
+= 2.4.1 =
+Requires a release ZIP matching the release version and prevents source-archive fallback during update checks.
+
 = 2.4.0 =
 Preserves notice callback hook context and supports exact callback exclusions for confirmed alerts.
 
 = 2.3.0 =
-Requires the correctly packaged GitHub release ZIP for one-click updates.
+Introduced the matching release ZIP check; version 2.4.1 closes the remaining source-archive fallback.
 
 = 2.2.1 =
 Adds the branded View Details header and improves compatibility and support information.
