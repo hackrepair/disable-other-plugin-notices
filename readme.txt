@@ -2,9 +2,9 @@
 Contributors: hackrepair
 Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
-Tested up to: 8.3.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.3.0
+Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,7 +61,7 @@ Into a collapsed panel at the top of the same screen, in the order WordPress wou
 
 = Will a plugin's setup wizard or activation notice still work? =
 
-Yes. The notice is printed a fraction of a second later than it otherwise would have been and in a different spot on the page. Its buttons and links behave exactly as before.
+Yes. The notice callback runs at its original hook and priority. Its output is shown in the grouped panel, and its buttons and links remain available there.
 
 = Are there notices it cannot catch? =
 
@@ -84,7 +84,15 @@ Use the `dopn_collapse_notice` filter:
         return false;
     }
     return $collapse;
-}, 10, 2 );`
+}, 10, 4 );`
+
+The filter also supplies the original callable as an optional fifth argument. To leave one confirmed security alert callback visible while grouping other notices from the same plugin, use a site-specific mu-plugin and replace the example function name with the exact registered alert callback:
+
+`add_filter( 'dopn_collapse_notice', function( $collapse, $source, $hook, $priority, $callback ) {
+    return 'admin_notices' === $hook && 'my_security_alert_callback' === $callback ? false : $collapse;
+}, 10, 5 );`
+
+No automatic security alert classification is performed; configure exact exclusions for known callbacks on your installation.
 
 = What data does the plugin store? =
 
@@ -99,6 +107,13 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
 
 == Changelog ==
+
+= 2.4.0 =
+* Changed: Eligible notice callbacks now run on their original hook, with their original arguments and order; only their rendered markup moves to the panel.
+* Added: The original callback as the optional fifth argument to `dopn_collapse_notice`, allowing a confirmed alert to stay visible without exempting every notice from its plugin.
+* Improved: Request-local caching of callback origins and source ownership reduces repeated reflection and path lookups.
+* Improved: Partial notice output is retained if a callback throws an exception.
+* Fixed: The notice count stays accurate when a late JavaScript banner joins a panel containing inline style or script markup; the screen-reader count updates too.
 
 = 2.3.0 =
 * Fixed: GitHub updates now require a matching uploaded release ZIP instead of falling back to GitHub's source archive, which has an incompatible plugin folder name.
@@ -137,6 +152,9 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.4.0 =
+Preserves notice callback hook context and supports exact callback exclusions for confirmed alerts.
 
 = 2.3.0 =
 Requires the correctly packaged GitHub release ZIP for one-click updates.

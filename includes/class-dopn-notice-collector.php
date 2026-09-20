@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Detaches third-party admin notice callbacks and reprints them inside one panel.
+ * Captures third-party admin notice output at its original hook and prints it inside one panel.
  *
  * Attribution is done by asking PHP where each registered callback was defined.
  * A callback declared inside wp-admin or wp-includes is WordPress itself and is
@@ -41,12 +41,15 @@ class DOPN_Notice_Collector {
     const USER_META_KEY = 'dopn_group_notices';
 
     /**
-     * Callbacks removed from the notice hooks, in the order they were registered.
+     * Captured markup in callback execution order.
      *
      * @since 1.0.0
      * @var array
      */
     private $captured = array();
+
+    /** @var bool Whether a callback has been wrapped for capture. */
+    private $has_wrapped_callbacks = false;
 
     /**
      * Whether any third-party notice callback was registered on this screen.
@@ -79,6 +82,15 @@ class DOPN_Notice_Collector {
      * @var string
      */
     private $plugin_path = '';
+
+    /** @var array<string,string> Callback identity to normalized defining file. */
+    private $callback_paths = array();
+
+    /** @var array<string,bool> Normalized source file to third-party classification. */
+    private $source_ownership = array();
+
+    /** @var array<string,string> Normalized source file to resolved path. */
+    private $resolved_paths = array();
 
     /**
      * Registers the hooks this class needs.
@@ -171,7 +183,7 @@ class DOPN_Notice_Collector {
 
         wp_enqueue_script(
             'dopn-banner-watcher',
-            DOPN_PLUGIN_URL . 'assets/js/dopn-banner-watcher.js',
+            DOPN_PLUGIN_URL . 'assets/js/dopn-banner-watcher-2.4.0.js',
             array(),
             DOPN_VERSION,
             true
@@ -235,7 +247,7 @@ class DOPN_Notice_Collector {
     }
 
     /**
-     * Removes third-party notice callbacks before WordPress runs them.
+     * Wraps eligible notice callbacks before WordPress runs them.
      *
      * Runs on in_admin_header, which fires after every plugin has registered its
      * notices and before WordPress prints them. Because this method is itself a
@@ -266,7 +278,7 @@ class DOPN_Notice_Collector {
             $this->scan_hook( $hook, $grouping );
         }
 
-        if ( ! empty( $this->captured ) ) {
+        if ( $this->has_wrapped_callbacks ) {
             add_action( 'all_admin_notices', array( $this, 'render' ), PHP_INT_MAX );
         }
     }
@@ -279,7 +291,7 @@ class DOPN_Notice_Collector {
      * method is called from inside it (see capture()). Scanning it here, before
      * admin_notices and all_admin_notices, is what lets a banner hooked to
      * in_admin_header at a later priority than this class's own listener get
-     * detached before it ever prints.
+     * wrapped before it prints.
      *
      * @since 1.0.0
      * @since 2.1.0 Added in_admin_header.
@@ -303,12 +315,12 @@ class DOPN_Notice_Collector {
     }
 
     /**
-     * Inspects one notice hook and detaches the third-party callbacks on it.
+     * Inspects one notice hook and wraps eligible callbacks in place.
      *
      * @since 1.0.0
      *
      * @param string $hook     Hook name to inspect.
-     * @param bool   $grouping Whether callbacks should actually be detached.
+     * @param bool   $grouping Whether callbacks should be captured.
      * @return void
      */
     private function scan_hook( $hook, $grouping ) {
@@ -318,11 +330,11 @@ class DOPN_Notice_Collector {
             return;
         }
 
-        // A copy, so detaching a callback does not disturb this loop.
+        // A copy, so wrapping a callback does not disturb this loop.
         $registered = $wp_filter[ $hook ]->callbacks;
 
         foreach ( $registered as $priority => $callbacks ) {
-            foreach ( $callbacks as $callback ) {
+            foreach ( $callbacks as $callback_id => $callback ) {
                 if ( ! isset( $callback['function'] ) ) {
                     continue;
                 }
@@ -350,20 +362,89 @@ class DOPN_Notice_Collector {
                  * @param string $source   File the notice callback was declared in.
                  * @param string $hook     Notice hook the callback is attached to.
                  * @param int    $priority Priority the callback is attached at.
+                 * @param callable $callback Original registered callback.
                  */
-                if ( ! apply_filters( 'dopn_collapse_notice', true, $source, $hook, $priority ) ) {
+                if ( ! apply_filters( 'dopn_collapse_notice', true, $source, $hook, $priority, $callback['function'] ) ) {
                     continue;
                 }
 
-                $this->captured[] = array(
-                    'function' => $callback['function'],
-                    'hook'     => $hook,
-                    'priority' => $priority,
-                );
+                // The current in_admin_header priority has already begun. Never
+                // change a callback whose execution has started or finished.
+                if ( 'in_admin_header' === $hook && $priority <= 0 ) {
+                    continue;
+                }
 
-                remove_action( $hook, $callback['function'], $priority );
+                // Replace the callable at its existing WP_Hook key. Removing and
+                // re-adding it moves it to the end of the same-priority queue.
+                // Retaining the key also preserves remove_action() by the
+                // original callable for code that removes the registration.
+                if ( ! isset( $wp_filter[ $hook ]->callbacks[ $priority ][ $callback_id ] ) ||
+                    $wp_filter[ $hook ]->callbacks[ $priority ][ $callback_id ]['function'] !== $callback['function'] ) {
+                    continue;
+                }
+
+                $original = $callback['function'];
+                $accepted = isset( $callback['accepted_args'] ) ? max( 0, (int) $callback['accepted_args'] ) : 1;
+                $collector = $this;
+                $wp_filter[ $hook ]->callbacks[ $priority ][ $callback_id ]['function'] =
+                    static function ( ...$args ) use ( $collector, $original, $accepted ) {
+                        return $collector->collect_callback( $original, array_slice( $args, 0, $accepted ) );
+                    };
+                $this->has_wrapped_callbacks = true;
             }
         }
+    }
+
+    /**
+     * Run the original callback at its original hook and capture its markup.
+     * Only its display is deferred; current_filter() and callback ordering stay intact.
+     *
+     * @param callable $callback Original notice callback.
+     * @param array    $args     WordPress-provided arguments.
+     * @return mixed Callback return value, when any.
+     */
+    public function collect_callback( $callback, $args ) {
+        $level = ob_get_level();
+        ob_start();
+
+        try {
+            $result = call_user_func_array( $callback, $args );
+        } catch ( Throwable $e ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( sprintf( 'DOPN notice callback error: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) );
+            }
+            $result = null;
+        } finally {
+            $chunks = array();
+            while ( ob_get_level() > $level ) {
+                array_unshift( $chunks, (string) ob_get_clean() );
+            }
+
+            $markup = implode( '', $chunks );
+            if ( '' !== trim( $markup ) ) {
+                $this->captured[] = $this->guard_against_core_relocation( $markup );
+            }
+        }
+
+        return $result;
+    }
+
+    /** Generate a stable request-local identity for every supported callable. */
+    private function callback_identity( $callback ) {
+        if ( is_string( $callback ) ) {
+            return 'function:' . strtolower( $callback );
+        }
+        if ( $callback instanceof Closure ) {
+            return 'closure:' . spl_object_hash( $callback );
+        }
+        if ( is_object( $callback ) ) {
+            return 'object:' . spl_object_hash( $callback ) . '::__invoke';
+        }
+        if ( is_array( $callback ) && isset( $callback[0], $callback[1] ) ) {
+            return ( is_object( $callback[0] ) ? 'object:' . spl_object_hash( $callback[0] ) : 'class:' . strtolower( $callback[0] ) ) . '::' . strtolower( $callback[1] );
+        }
+
+        return '';
     }
 
     /**
@@ -375,6 +456,11 @@ class DOPN_Notice_Collector {
      * @return string Normalized file path, or an empty string when it cannot be determined.
      */
     private function callback_path( $callback ) {
+        $identity = $this->callback_identity( $callback );
+        if ( '' !== $identity && array_key_exists( $identity, $this->callback_paths ) ) {
+            return $this->callback_paths[ $identity ];
+        }
+
         try {
             if ( $callback instanceof Closure ) {
                 $reflection = new ReflectionFunction( $callback );
@@ -384,6 +470,9 @@ class DOPN_Notice_Collector {
                 $reflection = new ReflectionMethod( $parts[0], $parts[1] );
             } elseif ( is_string( $callback ) ) {
                 if ( ! function_exists( $callback ) ) {
+                    if ( '' !== $identity ) {
+                        $this->callback_paths[ $identity ] = '';
+                    }
                     return '';
                 }
 
@@ -393,15 +482,26 @@ class DOPN_Notice_Collector {
             } elseif ( is_object( $callback ) && method_exists( $callback, '__invoke' ) ) {
                 $reflection = new ReflectionMethod( $callback, '__invoke' );
             } else {
+                if ( '' !== $identity ) {
+                    $this->callback_paths[ $identity ] = '';
+                }
                 return '';
             }
         } catch ( ReflectionException $exception ) {
+            if ( '' !== $identity ) {
+                $this->callback_paths[ $identity ] = '';
+            }
             return '';
         }
 
         $file = $reflection->getFileName();
 
-        return is_string( $file ) ? wp_normalize_path( $file ) : '';
+        $path = is_string( $file ) ? wp_normalize_path( $file ) : '';
+        if ( '' !== $identity ) {
+            $this->callback_paths[ $identity ] = $path;
+        }
+
+        return $path;
     }
 
     /**
@@ -420,8 +520,16 @@ class DOPN_Notice_Collector {
             return false;
         }
 
-        $real_file = realpath( $file );
-        $file      = wp_normalize_path( false !== $real_file ? $real_file : $file );
+        if ( array_key_exists( $file, $this->source_ownership ) ) {
+            return $this->source_ownership[ $file ];
+        }
+
+        if ( ! array_key_exists( $file, $this->resolved_paths ) ) {
+            $real_file = realpath( $file );
+            $this->resolved_paths[ $file ] = wp_normalize_path( false !== $real_file ? $real_file : $file );
+        }
+        $source = $file;
+        $file   = $this->resolved_paths[ $source ];
 
         if ( '' === $this->plugin_path ) {
             $real_plugin       = realpath( DOPN_PLUGIN_DIR );
@@ -429,16 +537,16 @@ class DOPN_Notice_Collector {
         }
 
         if ( 0 === strpos( $file, $this->plugin_path ) ) {
-            return false;
+            return $this->source_ownership[ $source ] = false;
         }
 
         foreach ( $this->core_paths() as $core_path ) {
             if ( 0 === strpos( $file, $core_path ) ) {
-                return false;
+                return $this->source_ownership[ $source ] = false;
             }
         }
 
-        return true;
+        return $this->source_ownership[ $source ] = true;
     }
 
     /**
@@ -479,50 +587,7 @@ class DOPN_Notice_Collector {
 
         $this->rendered = true;
 
-        $notices = array();
-
-        foreach ( $this->captured as $entry ) {
-            $level = ob_get_level();
-
-            ob_start();
-
-            try {
-                call_user_func( $entry['function'] );
-            } catch ( Throwable $e ) {
-                while ( ob_get_level() > $level ) {
-                    ob_end_clean();
-                }
-
-                if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                    error_log( sprintf( 'DOPN notice callback error: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) );
-                }
-
-                continue;
-            }
-
-            /*
-             * Buffers are unwound back to the level they were at before the
-             * callback ran. A notice callback that leaves an output buffer open
-             * would otherwise swallow the rest of the admin page, and one that
-             * closes too many is simply left with nothing collected here.
-             */
-            $chunks = array();
-
-            while ( ob_get_level() > $level ) {
-                array_unshift( $chunks, (string) ob_get_clean() );
-            }
-
-            $markup = implode( '', $chunks );
-            $markup = $this->guard_against_core_relocation( $markup );
-
-            if ( '' !== trim( $markup ) ) {
-                $notices[] = $markup;
-            }
-        }
-
-        if ( empty( $notices ) ) {
-            return;
-        }
+        $notices = $this->captured;
 
         $count = count( $notices );
 
@@ -537,14 +602,15 @@ class DOPN_Notice_Collector {
         $open = (bool) apply_filters( 'dopn_panel_open', false, $count );
 
         printf(
-            '<div class="dopn-notices"><details class="dopn-notices__panel"%s>',
+            '<div class="dopn-notices" data-dopn-count="%d"><details class="dopn-notices__panel"%s>',
+            $count,
             esc_attr( $open ? ' open' : '' )
         );
 
         echo '<summary class="dopn-notices__summary">';
         echo '<span class="dopn-notices__label">' . esc_html__( 'Other plugin notices', 'disable-other-plugin-notices' ) . '</span>';
         echo '<span class="dopn-notices__count" aria-hidden="true">' . esc_html( number_format_i18n( $count ) ) . '</span>';
-        echo '<span class="screen-reader-text">';
+        echo '<span class="screen-reader-text dopn-notices__count-text">';
         printf(
             /* translators: %s: Number of notices grouped into the panel. */
             esc_html( _n( '%s notice from another plugin or theme', '%s notices from other plugins and themes', $count, 'disable-other-plugin-notices' ) ),

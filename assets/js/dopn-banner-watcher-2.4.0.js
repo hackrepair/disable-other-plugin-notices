@@ -108,6 +108,7 @@
 
 		var wrap = document.createElement( 'div' );
 		wrap.className = 'dopn-notices';
+		wrap.setAttribute( 'data-dopn-count', '0' );
 
 		var details = document.createElement( 'details' );
 		details.className = 'dopn-notices__panel';
@@ -148,7 +149,11 @@
 			return;
 		}
 
-		var count = wrap.querySelectorAll( '.dopn-notices__list > *' ).length;
+		// Server callbacks can emit STYLE and SCRIPT siblings beside a notice.
+		// Count the callback entries reported by PHP plus banners moved here,
+		// instead of treating every child element as another notice.
+		var count = ( parseInt( wrap.getAttribute( 'data-dopn-count' ), 10 ) || 0 ) + 1;
+		wrap.setAttribute( 'data-dopn-count', String( count ) );
 		var countEl = wrap.querySelector( '.dopn-notices__count' );
 		var countText = wrap.querySelector( '.dopn-notices__count-text' );
 

@@ -60,7 +60,7 @@ namespace {
 	$checker = $updater->checker();
 
 	$checker->api->fixture = (object) array(
-		'tag_name'    => 'v2.3.0',
+		'tag_name'    => 'v2.4.0',
 		'zipball_url' => 'https://example.test/source.zip',
 		'created_at'  => '2026-09-19T00:00:00Z',
 		'assets'      => array(),
@@ -82,8 +82,8 @@ namespace {
 		exit( 1 );
 	}
 
-	$checker->api->fixture->assets[0]->name = 'disable-other-plugin-notices.2.3.0.zip';
-	$checker->api->fixture->assets[0]->browser_download_url = 'https://example.test/disable-other-plugin-notices.2.3.0.zip';
+	$checker->api->fixture->assets[0]->name = 'disable-other-plugin-notices.2.4.0.zip';
+	$checker->api->fixture->assets[0]->browser_download_url = 'https://example.test/disable-other-plugin-notices.2.4.0.zip';
 	$release = $checker->api->getLatestRelease();
 
 	if ( null === $release || $release->downloadUrl !== $checker->api->fixture->assets[0]->browser_download_url ) {

@@ -25,7 +25,7 @@ Notices from WordPress itself are never touched. Core update reminders, PHP vers
 
 Most notice-hiding plugins work by matching CSS classes or scraping text, which a plugin can dodge by changing its markup and a core notice can get caught by accident.
 
-This plugin hooks in after every plugin has registered its notices and, for each one, asks PHP which file the registered callback was actually declared in, using [Reflection](https://www.php.net/manual/en/book.reflection.php). A callback declared inside `wp-admin/` or `wp-includes/` is WordPress itself and is left alone. A callback declared anywhere else — a plugin folder, a theme, an mu-plugin, a drop-in — is moved into the panel.
+This plugin hooks in after every plugin has registered its notices and, for each one, asks PHP which file the registered callback was actually declared in, using [Reflection](https://www.php.net/manual/en/book.reflection.php). A callback declared inside `wp-admin/` or `wp-includes/` is WordPress itself and is left alone. For eligible third-party callbacks, the plugin runs the callback on its original hook and buffers its markup for the panel.
 
 This is attribution by origin rather than guesswork about wording or CSS classes, so a plugin cannot avoid the panel by styling its notice to look like a core message, and a core notice cannot be swept up by accident. When the origin of a callback cannot be determined, the notice is left exactly where it is.
 
@@ -55,7 +55,7 @@ It does not delete notices, dismiss them on your behalf, write to other plugins'
 | Filter | Fires with | Purpose |
 | --- | --- | --- |
 | `dopn_grouping_enabled` | `bool $enabled, int $user_id` | Override the per-user on/off setting entirely, e.g. to force it on for everyone. |
-| `dopn_collapse_notice` | `bool $collapse, string $source, string $hook, int $priority` | Keep one specific notice in its normal position instead of the panel, based on the file it came from. |
+| `dopn_collapse_notice` | `bool $collapse, string $source, string $hook, int $priority, callable $callback` | Return `false` to keep an exact notice callback in its normal position. The fifth argument is optional for existing filters. |
 | `dopn_panel_open` | `bool $open, int $count` | Render the panel expanded by default instead of collapsed. |
 | `dopn_show_screen_option` | `bool $show, WP_Screen $screen` | Suppress the Screen Options checkbox on a specific screen. |
 
@@ -70,13 +70,26 @@ add_filter( 'dopn_collapse_notice', function ( $collapse, $source ) {
 }, 10, 2 );
 ```
 
+To keep a confirmed security alert visible while grouping promotional notices from the same plugin, identify the alert callback on the target WordPress installation and configure a precise opt-out. For example, in a site-specific mu-plugin (replace `my_security_alert_callback` with the verified callback name):
+
+```php
+add_filter( 'dopn_collapse_notice', function ( $collapse, $source, $hook, $priority, $callback ) {
+    if ( 'admin_notices' === $hook && 'my_security_alert_callback' === $callback ) {
+        return false;
+    }
+    return $collapse;
+}, 10, 5 );
+```
+
+For object methods and closures, compare the callable against the original registered callable from the site; a callback name from another plugin version may differ. A source filename or a red notice alone does not identify an urgent security alert. There are no bundled automatic security exceptions; site owners can configure exceptions for alerts confirmed on their installations.
+
 ## FAQ
 
 **Does this hide WordPress security or update notices?**
 No. Notices printed by WordPress core are never moved.
 
 **Are there notices it cannot catch?**
-Yes. The plugin works with notices registered on the standard WordPress notice hooks (`admin_notices`, `all_admin_notices`, `network_admin_notices`, `user_admin_notices`), which is how the overwhelming majority are printed. A plugin that echoes its notice directly into the page from some other hook, or injects one with JavaScript after the page loads, is printing outside the system and will keep appearing in its usual place.
+Yes. The plugin handles standard WordPress notice hooks and `in_admin_header`. It also moves late JavaScript banners that match an explicit selector, including Elementor's conversion banner. Direct output from unrelated hooks and JavaScript banners without a configured selector remain in their usual positions.
 
 **Does it work on multisite?**
 Yes. Network admin and user admin screens are handled alongside regular admin screens, and the per-user setting follows the user across the network.
@@ -94,6 +107,8 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 ## Contributing
 
 Issues and pull requests are welcome.
+
+Run the repository tests with `php .github/tests/test-notice-collector.php` and `php .github/tests/test-updater.php`. The browser watcher test uses `jsdom`: `node .github/tests/test-banner-watcher.js`. The real `WP_Hook` test takes a WordPress checkout path: `php .github/tests/test-real-wp-hook.php /path/to/wordpress`.
 
 ## License
 
