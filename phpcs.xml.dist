@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="Disable Other Plugin Notices">
-    <description>Coding standards for the Disable Other Plugin Notices plugin.</description>
+<ruleset name="The Hack Repair Guy's Disable Other Plugin Notices">
+    <description>Coding standards for The Hack Repair Guy's Disable Other Plugin Notices plugin.</description>
 
     <file>.</file>
 
