@@ -1,4 +1,4 @@
-# Disable Other Plugin Notices
+# The Hack Repair Guy's Disable Other Plugin Notices
 
 **Groups admin notices from other plugins and themes into one collapsed panel — WordPress core notices stay exactly where they are.**
 
@@ -9,13 +9,13 @@
 
 Every plugin thinks its notice is the important one. Open `wp-admin` on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
-**Disable Other Plugin Notices** takes the notices that come from plugins and themes and puts them in one collapsed panel labeled "Other plugin notices." Nothing is deleted and nothing is silenced — every notice is still there, still complete, still dismissible, one click away. Everything else on the screen moves back up where it belongs.
+**The Hack Repair Guy's Disable Other Plugin Notices** takes the notices that come from plugins and themes and puts them in one collapsed panel labeled "Other plugin notices." Nothing is deleted and nothing is silenced — every notice is still there, still complete, still dismissible, one click away. Everything else on the screen moves back up where it belongs.
 
 Notices from WordPress itself are never touched. Core update reminders, PHP version warnings, Site Health results, and settings-saved messages keep their normal position at the top of the screen. That distinction is the whole point of the plugin: the notices that matter for running the site stay in front of you, and the marketing sits in a drawer.
 
 ## Demo (Click to View on YouTube)
 
-[![Disable Other Plugin Notices demo](https://img.youtube.com/vi/y45eFF2J6FU/maxresdefault.jpg)](https://youtu.be/y45eFF2J6FU)
+[![The Hack Repair Guy's Disable Other Plugin Notices demo](https://img.youtube.com/vi/y45eFF2J6FU/maxresdefault.jpg)](https://youtu.be/y45eFF2J6FU)
 
 *30 seconds: three other-plugin notices go from cluttering the top of the screen to one collapsed panel, leaving WordPress's own notices in place. Click to watch.*
 

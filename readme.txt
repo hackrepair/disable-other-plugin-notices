@@ -1,10 +1,10 @@
-=== Disable Other Plugin Notices ===
+=== The Hack Repair Guy's Disable Other Plugin Notices ===
 Contributors: hackrepair
 Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Groups admin notices from other plugins and themes into one collapsed panel, whi
 
 Every plugin thinks its notice is the important one. Open wp-admin on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
-Disable Other Plugin Notices takes the notices that come from plugins and themes and puts them in one collapsed panel labeled "Other plugin notices." Nothing is deleted and nothing is silenced. The notices are still there, still complete, still dismissible, one click away in the panel. Everything else on the screen moves back up where it belongs.
+The Hack Repair Guy's Disable Other Plugin Notices takes the notices that come from plugins and themes and puts them in one collapsed panel labeled "Other plugin notices." Nothing is deleted and nothing is silenced. The notices are still there, still complete, still dismissible, one click away in the panel. Everything else on the screen moves back up where it belongs.
 
 Notices from WordPress itself are never touched. Core update reminders, PHP version warnings, Site Health results, and settings-saved messages keep their normal position at the top of the screen. That distinction is the whole point of the plugin: the notices that matter for running the site stay in front of you, and the marketing sits in a drawer.
 
@@ -108,6 +108,9 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 
 == Changelog ==
 
+= 2.4.2 =
+* Changed: Renamed the plugin to "The Hack Repair Guy's Disable Other Plugin Notices" in WordPress and project documentation for consistency with other Hack Repair Guy plugins.
+
 = 2.4.1 =
 * Fixed: Update checks now use only published GitHub releases with a matching uploaded ZIP; they never fall back to tag or branch source archives.
 * Fixed: A release is skipped when its ZIP filename does not match the release version.
@@ -158,6 +161,9 @@ Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (
 * Adds the `dopn_grouping_enabled`, `dopn_collapse_notice`, and `dopn_panel_open` filters.
 
 == Upgrade Notice ==
+
+= 2.4.2 =
+Updates the displayed plugin name to match The Hack Repair Guy's other plugins.
 
 = 2.4.1 =
 Requires a release ZIP matching the release version and prevents source-archive fallback during update checks.
