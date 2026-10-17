@@ -46,6 +46,10 @@ To turn grouping off for your own account, open the **Screen Options** tab at th
 
 Since the plugin isn't on WordPress.org, it checks this repository's [releases](../../releases) directly. When a new version is published here with a ZIP named `disable-other-plugin-notices.<version>.zip`, the Plugins screen shows the normal "update available" notice and offers a one-click update. Releases without a matching uploaded ZIP are skipped.
 
+## Third-party code
+
+Update checks use [Plugin Update Checker](https://github.com/YahnisElsts/plugin-update-checker "Plugin Update Checker on GitHub") by Jānis Elsts (MIT license), included unmodified in `plugin-update-checker/`.
+
 ## What it does not do
 
 It does not delete notices, dismiss them on your behalf, write to other plugins' options, collect analytics, add a menu item, add a settings page, add an upsell, or display a notice of its own. It runs only in `wp-admin` and does nothing on the front end. The only outbound request it makes is the periodic update check against this repository, covered in [Updates](#updates) above; nothing about your site's content, users, or configuration is included in it.
