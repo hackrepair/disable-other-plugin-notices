@@ -34,6 +34,8 @@ final class DOPN_Updater {
 	const ASSET_PATTERN  = '/^disable-other-plugin-notices\.[0-9]+(?:\.[0-9]+){2}\.zip$/';
 
 	/**
+	 * Underlying Plugin Update Checker instance.
+	 *
 	 * @var \YahnisElsts\PluginUpdateChecker\v5\Vcs\Api|null
 	 */
 	private $checker = null;

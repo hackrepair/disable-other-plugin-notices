@@ -48,7 +48,11 @@ class DOPN_Notice_Collector {
      */
     private $captured = array();
 
-    /** @var bool Whether a callback has been wrapped for capture. */
+    /**
+     * Whether a callback has been wrapped for capture.
+     *
+     * @var bool
+     */
     private $has_wrapped_callbacks = false;
 
     /**
@@ -83,13 +87,25 @@ class DOPN_Notice_Collector {
      */
     private $plugin_path = '';
 
-    /** @var array<string,string> Callback identity to normalized defining file. */
+    /**
+     * Maps callback identities to normalized defining files.
+     *
+     * @var array<string,string>
+     */
     private $callback_paths = array();
 
-    /** @var array<string,bool> Normalized source file to third-party classification. */
+    /**
+     * Maps normalized source files to third-party classifications.
+     *
+     * @var array<string,bool>
+     */
     private $source_ownership = array();
 
-    /** @var array<string,string> Normalized source file to resolved path. */
+    /**
+     * Maps normalized source files to resolved paths.
+     *
+     * @var array<string,string>
+     */
     private $resolved_paths = array();
 
     /**
@@ -174,7 +190,7 @@ class DOPN_Notice_Collector {
      * @return void
      */
     public function enqueue_scripts() {
-        $user_id  = get_current_user_id();
+        $user_id   = get_current_user_id();
         $selectors = $this->late_banner_selectors();
 
         if ( ! $user_id || empty( $selectors ) ) {
@@ -196,9 +212,11 @@ class DOPN_Notice_Collector {
                 'groupingEnabled' => self::is_enabled_for_user( $user_id ),
                 'selectors'       => array_values( $selectors ),
                 'strings'         => array(
-                    'label'     => __( 'Other plugin notices', 'disable-other-plugin-notices' ),
-                    'singular'  => __( '%s notice from another plugin or theme', 'disable-other-plugin-notices' ),
-                    'plural'    => __( '%s notices from other plugins and themes', 'disable-other-plugin-notices' ),
+                    'label'    => __( 'Other plugin notices', 'disable-other-plugin-notices' ),
+                    /* translators: %s: Number of notices grouped into the panel. */
+                    'singular' => __( '%s notice from another plugin or theme', 'disable-other-plugin-notices' ),
+                    /* translators: %s: Number of notices grouped into the panel. */
+                    'plural'   => __( '%s notices from other plugins and themes', 'disable-other-plugin-notices' ),
                 ),
             )
         );
@@ -286,7 +304,7 @@ class DOPN_Notice_Collector {
     /**
      * Lists the notice hooks that apply to the current admin context.
      *
-     * in_admin_header is included unconditionally -- unlike the notices hooks
+     * The in_admin_header hook is included unconditionally -- unlike the notices hooks
      * it is not split by admin context, and it fires early enough that this
      * method is called from inside it (see capture()). Scanning it here, before
      * admin_notices and all_admin_notices, is what lets a banner hooked to
@@ -383,8 +401,8 @@ class DOPN_Notice_Collector {
                     continue;
                 }
 
-                $original = $callback['function'];
-                $accepted = isset( $callback['accepted_args'] ) ? max( 0, (int) $callback['accepted_args'] ) : 1;
+                $original  = $callback['function'];
+                $accepted  = isset( $callback['accepted_args'] ) ? max( 0, (int) $callback['accepted_args'] ) : 1;
                 $collector = $this;
                 $wp_filter[ $hook ]->callbacks[ $priority ][ $callback_id ]['function'] =
                     static function ( ...$args ) use ( $collector, $original, $accepted ) {
@@ -411,6 +429,7 @@ class DOPN_Notice_Collector {
             $result = call_user_func_array( $callback, $args );
         } catch ( Throwable $e ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Log callback failures only when WP_DEBUG is enabled.
                 error_log( sprintf( 'DOPN notice callback error: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) );
             }
             $result = null;
@@ -429,7 +448,12 @@ class DOPN_Notice_Collector {
         return $result;
     }
 
-    /** Generate a stable request-local identity for every supported callable. */
+    /**
+     * Generates a stable request-local identity for every supported callable.
+     *
+     * @param callable $callback Callback to identify.
+     * @return string Stable callback identity.
+     */
     private function callback_identity( $callback ) {
         if ( is_string( $callback ) ) {
             return 'function:' . strtolower( $callback );
@@ -525,7 +549,7 @@ class DOPN_Notice_Collector {
         }
 
         if ( ! array_key_exists( $file, $this->resolved_paths ) ) {
-            $real_file = realpath( $file );
+            $real_file                     = realpath( $file );
             $this->resolved_paths[ $file ] = wp_normalize_path( false !== $real_file ? $real_file : $file );
         }
         $source = $file;
@@ -537,16 +561,19 @@ class DOPN_Notice_Collector {
         }
 
         if ( 0 === strpos( $file, $this->plugin_path ) ) {
-            return $this->source_ownership[ $source ] = false;
+            $this->source_ownership[ $source ] = false;
+            return false;
         }
 
         foreach ( $this->core_paths() as $core_path ) {
             if ( 0 === strpos( $file, $core_path ) ) {
-                return $this->source_ownership[ $source ] = false;
+                $this->source_ownership[ $source ] = false;
+                return false;
             }
         }
 
-        return $this->source_ownership[ $source ] = true;
+        $this->source_ownership[ $source ] = true;
+        return true;
     }
 
     /**
@@ -602,8 +629,8 @@ class DOPN_Notice_Collector {
         $open = (bool) apply_filters( 'dopn_panel_open', false, $count );
 
         printf(
-            '<div class="dopn-notices" data-dopn-count="%d"><details class="dopn-notices__panel"%s>',
-            $count,
+            '<div class="dopn-notices" data-dopn-count="%s"><details class="dopn-notices__panel"%s>',
+            esc_attr( (string) $count ),
             esc_attr( $open ? ' open' : '' )
         );
 
@@ -641,7 +668,7 @@ class DOPN_Notice_Collector {
      * Stops WordPress core's own admin JavaScript from pulling a notice back
      * out of the panel.
      *
-     * wp-admin/js/common.js runs `$( 'div.updated, div.error, div.notice' )
+     * The wp-admin/js/common.js script runs `$( 'div.updated, div.error, div.notice' )
      * .not( '.inline, .below-h2' ).insertAfter( $headerEnd )` on every admin
      * page that has a `.wp-header-end` marker, which is nearly every list and
      * edit screen. That selector has no idea an element is sitting inside this
