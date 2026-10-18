@@ -1,0 +1,8 @@
+/* Contain the native sidebar float within its own column. */
+#plugin-information #section-holder .section { overflow: auto; }
+#plugin-information .dopn-toolkit { display: flow-root; }
+#plugin-information .dopn-toolkit > p:first-child { margin: 0 0 8px; font-size: 18px; font-weight: 600; line-height: 1.4; color: #1d2327; }
+#plugin-information .dopn-toolkit-card { border: 1px solid #dcdcde; border-left: 3px solid #2271b1; border-radius: 4px; padding: 14px 16px; margin: 16px 0; background: #f8fafb; }
+#plugin-information .dopn-toolkit-card h3 { clear: none; margin: 0 0 6px; font-size: 16px; line-height: 1.4; }
+#plugin-information .dopn-toolkit-card p { margin: 6px 0 0; }
+#plugin-information .dopn-toolkit > p:last-child { color: #646970; font-size: 12px; }

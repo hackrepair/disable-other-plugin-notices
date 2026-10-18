@@ -117,3 +117,11 @@ Run the repository tests with `php .github/tests/test-notice-collector.php` and 
 ## License
 
 GPLv2 or later. See [LICENSE](LICENSE).
+
+## 2.5.0
+
+View Details now includes **Other THRG Plugins**, a guide to the three companion tools with descriptions and project links.
+
+## 2.5.1
+
+Corrected release packaging to retain the complete bundled updater, including the View Details parser dependencies.
