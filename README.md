@@ -125,3 +125,7 @@ View Details now includes **Other THRG Plugins**, a guide to the three companion
 ## 2.5.1
 
 Corrected release packaging to retain the complete bundled updater, including the View Details parser dependencies.
+
+## 2.5.3
+
+Update-check failures now use plain language and clarify that plugin features continue to work. Confirmed GitHub rate limits include a retry time in the site timezone. Technical diagnostics are collapsed. This changes reporting; retry scheduling is unchanged.

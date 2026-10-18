@@ -4,6 +4,9 @@
 
     <file>.</file>
 
+    <!-- Standalone test stubs are not shipped plugin code. -->
+    <exclude-pattern>/tests/*</exclude-pattern>
+
     <exclude-pattern>/.git/*</exclude-pattern>
     <exclude-pattern>/.github/*</exclude-pattern>
     <exclude-pattern>/node_modules/*</exclude-pattern>
