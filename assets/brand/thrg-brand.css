@@ -1,0 +1,21 @@
+/* THRG Heart, plugin kit 1.0.0. Local assets; no JavaScript required. */
+.thrg-brand-heart {
+    display: block;
+    object-fit: contain;
+    flex-shrink: 0;
+    transform-origin: center;
+    animation: thrg-brand-heartbeat 2.2s ease-in-out 2;
+}
+@keyframes thrg-brand-heartbeat {
+    0%, 12%, 28%, 42%, 100% { transform: scale(1); }
+    18% { transform: scale(1.045); }
+    34% { transform: scale(1.065); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .thrg-brand-heart { animation: none; }
+}
+@media print {
+    .thrg-brand-heart { animation: none; transform: none; }
+}
+
+.dopn-notices__summary .dopn-brand-heart { display: inline-block; vertical-align: middle; margin-right: 6px; width: 20px; height: 20px; }
