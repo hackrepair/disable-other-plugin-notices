@@ -26,6 +26,7 @@ register_shutdown_function( static function () use ( $fixture ) {
 // Keep callbacks in this test file outside the plugin directory, as they are
 // on a real site. Otherwise ownership attribution would exclude the fixture.
 define( 'DOPN_PLUGIN_DIR', $fixture . '/' );
+define( 'DOPN_PLUGIN_URL', 'https://example.test/wp-content/plugins/disable-other-plugin-notices/' );
 require ABSPATH . WPINC . '/plugin.php';
 require DOPN_PLUGIN_DIR . 'includes/class-dopn-notice-collector.php';
 
@@ -36,6 +37,7 @@ function get_current_user_id() { return 1; }
 function get_user_meta() { return ''; }
 function wp_normalize_path( $path ) { return str_replace( '\\', '/', $path ); }
 function trailingslashit( $path ) { return rtrim( $path, '/\\' ) . '/'; }
+function esc_url( $url ) { return htmlspecialchars( (string) $url, ENT_QUOTES, 'UTF-8' ); }
 function esc_attr( $s ) { return htmlspecialchars( $s, ENT_QUOTES, 'UTF-8' ); }
 function esc_html( $s ) { return htmlspecialchars( (string) $s, ENT_QUOTES, 'UTF-8' ); }
 function esc_html__( $s ) { return $s; }

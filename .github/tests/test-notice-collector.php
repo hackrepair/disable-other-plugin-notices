@@ -258,6 +258,7 @@ function trailingslashit( $string ) {
 function esc_html( $t ) {
 	return htmlspecialchars( $t, ENT_QUOTES, 'UTF-8' );
 }
+function esc_url( $url ) { return htmlspecialchars( (string) $url, ENT_QUOTES, 'UTF-8' ); }
 function esc_attr( $t ) {
 	return htmlspecialchars( $t, ENT_QUOTES, 'UTF-8' );
 }

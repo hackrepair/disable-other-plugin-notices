@@ -32,6 +32,8 @@ namespace {
 		return false;
 	}
 
+	function add_action( $name, $callback, $priority = 10, $args = 1 ) { return true; }
+
 	function add_filter( $name, $callback ) {
 		$GLOBALS['dopn_test_filters'][ $name ][] = $callback;
 		return true;
@@ -67,6 +69,7 @@ namespace {
 	}
 
 	class DopnTestChecker {
+		public function getUniqueName( $name ) { return 'dopn_test_' . $name; }
 		public $api;
 		public $branch;
 
