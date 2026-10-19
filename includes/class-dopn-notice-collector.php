@@ -169,7 +169,6 @@ class DOPN_Notice_Collector {
      * @return void
      */
     public function enqueue_styles() {
-        wp_enqueue_style( 'dopn-brand', DOPN_PLUGIN_URL . 'assets/brand/thrg-brand.css', array(), DOPN_VERSION );
         wp_enqueue_style(
             'dopn-admin',
             DOPN_PLUGIN_URL . 'assets/css/dopn-admin.css',
@@ -636,7 +635,6 @@ class DOPN_Notice_Collector {
         );
 
         echo '<summary class="dopn-notices__summary">';
-        echo '<img class="thrg-brand-heart dopn-brand-heart" src="' . esc_url( DOPN_PLUGIN_URL . 'assets/brand/thrg-heart-128.png' ) . '" alt="" width="20" height="20" />';
         echo '<span class="dopn-notices__label">' . esc_html__( 'Other plugin notices', 'disable-other-plugin-notices' ) . '</span>';
         echo '<span class="dopn-notices__count" aria-hidden="true">' . esc_html( number_format_i18n( $count ) ) . '</span>';
         echo '<span class="screen-reader-text dopn-notices__count-text">';
