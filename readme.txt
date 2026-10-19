@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.5.5
+Stable tag: 2.5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,10 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
 
 == Changelog ==
+
+= 2.5.6 =
+* Added the THRG heart icons used by the WordPress plugin update list.
+
 
 = 2.5.5 =
 * Normalize all packaged file permissions to 0644 so assets remain readable on hosting with separate PHP and web-server users.
