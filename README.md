@@ -1,4 +1,8 @@
-# The Hack Repair Guy's Disable Other Plugin Notices
+<p align="center">
+  <img src=".github/branding/thrg-heart-animated.gif" alt="The Hack Repair Guy heart and wrench logo" width="144" height="144">
+</p>
+
+<h1 align="center">The Hack Repair Guy's Disable Other Plugin Notices</h1>
 
 **Groups admin notices from other plugins and themes into one collapsed panel — WordPress core notices stay exactly where they are.**
 
