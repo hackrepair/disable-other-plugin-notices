@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.5.6
+Stable tag: 2.5.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/disable-other-plugin-notices/discussions
@@ -115,7 +115,7 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 
 = How can I suggest improvements or report bugs? =
 
-Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
+For questions and ideas, visit [GitHub Discussions](https://github.com/hackrepair/disable-other-plugin-notices/discussions). To report a reproducible bug, open a [GitHub issue](https://github.com/hackrepair/disable-other-plugin-notices/issues).
 
 = Support =
 
@@ -124,6 +124,11 @@ If you found this plugin helpful, please [buy Jim a cup of coffee?](https://hack
 Questions and Feedback: For questions, ideas, or help with the plugin, [visit GitHub Discussions](https://github.com/hackrepair/disable-other-plugin-notices/discussions).
 
 == Changelog ==
+
+= 2.5.7 =
+* Added a Support entry at the bottom of the FAQ in the View Details window, with the buy-Jim-a-coffee link and GitHub Discussions.
+* The View Details "Plugin homepage" link now goes to the GitHub repository.
+* The "How can I suggest improvements or report bugs?" answer now points to GitHub Discussions and Issues.
 
 = 2.5.6 =
 * Added the THRG heart icons used by the WordPress plugin update list.
