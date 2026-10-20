@@ -117,6 +117,12 @@ This plugin is not distributed on the WordPress.org repository, so it checks its
 
 Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
 
+= Support =
+
+If you found this plugin helpful, please [buy Jim a cup of coffee?](https://hackrepair.com/donations/buy-jim-a-coffee)
+
+Questions and Feedback: For questions, ideas, or help with the plugin, [visit GitHub Discussions](https://github.com/hackrepair/disable-other-plugin-notices/discussions).
+
 == Changelog ==
 
 = 2.5.6 =

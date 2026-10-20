@@ -76,7 +76,7 @@ function dopn_local_plugin_info( $result, $action = null, $args = null ) {
 	$info->slug         = 'disable-other-plugin-notices';
 	$info->version      = DOPN_VERSION;
 	$info->author       = '<a href="https://hackrepair.com/">Jim Walker, The Hack Repair Guy</a>';
-	$info->homepage     = 'https://hackrepair.com/';
+	$info->homepage     = 'https://github.com/hackrepair/disable-other-plugin-notices';
 	$info->requires     = isset( $readme['requires_at_least'] ) ? $readme['requires_at_least'] : '';
 	$info->tested       = isset( $readme['tested_up_to'] ) ? $readme['tested_up_to'] : '';
 	$info->requires_php = isset( $readme['requires_php'] ) ? $readme['requires_php'] : '';
