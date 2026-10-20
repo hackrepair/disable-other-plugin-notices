@@ -1,14 +1,17 @@
 /* Load only inside this plugin's native View Details iframe. */
-body #plugin-information-title.with-banner {
+body #plugin-information-title {
     display: flex;
     align-items: center;
     gap: 28px;
     box-sizing: border-box;
     padding: 36px;
     height: 250px;
+    background-color: #402516;
     background-image: linear-gradient(120deg, #60A5FB, #402516);
+    background-position: center;
+    background-size: cover;
 }
-body #plugin-information-title.with-banner::before {
+body #plugin-information-title::before {
     content: "";
     display: block;
     flex: 0 0 112px;
@@ -17,7 +20,7 @@ body #plugin-information-title.with-banner::before {
     background: url("thrg-heart-256.png") center / contain no-repeat;
     animation: thrg-brand-heartbeat 2.2s ease-in-out 2;
 }
-body #plugin-information-title.with-banner h2 {
+body #plugin-information-title h2 {
     min-width: 0;
     margin: 0;
     padding: 0;
@@ -31,12 +34,35 @@ body #plugin-information-title.with-banner h2 {
     overflow-wrap: anywhere;
     text-wrap: balance;
 }
-body #plugin-information-title.with-banner .vignette { display: none; }
+body #plugin-information-title .vignette { display: none; }
 @media (max-width: 480px) {
-    body #plugin-information-title.with-banner { padding: 24px; gap: 18px; }
-    body #plugin-information-title.with-banner::before { flex-basis: 72px; width: 72px; height: 72px; }
-    body #plugin-information-title.with-banner h2 { font-size: 24px; }
+    body #plugin-information-title { padding: 24px; gap: 18px; }
+    body #plugin-information-title::before { flex-basis: 72px; width: 72px; height: 72px; }
+    body #plugin-information-title h2 { font-size: 24px; }
 }
 @media (prefers-reduced-motion: reduce), print {
-    body #plugin-information-title.with-banner::before { animation: none; transform: none; }
+    body #plugin-information-title::before { animation: none; transform: none; }
+}
+
+/* WordPress supplies a more specific .with-banner image rule. Keep that image
+   above the default gradient and place branding below the artwork's focal area. */
+body #plugin-information-title.with-banner {
+    align-items: flex-end;
+    gap: 14px;
+    padding: 18px 24px;
+}
+body #plugin-information-title.with-banner::before {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+}
+body #plugin-information-title.with-banner h2 {
+    padding: 8px 10px;
+    background: rgba(25, 15, 9, .82);
+    border-radius: 5px;
+    font-size: 22px;
+}
+@media (max-width: 480px) {
+    body #plugin-information-title.with-banner { padding: 14px; gap: 10px; }
+    body #plugin-information-title.with-banner h2 { font-size: 18px; }
 }
