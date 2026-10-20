@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/branding/thrg-heart-animated.gif" alt="The Hack Repair Guy heart and wrench logo" width="144" height="144">
+  <img src="assets/banner-1544x500.png" alt="Disable Other Plugin Notices: groups plugin admin notices into one collapsed panel" width="772" height="250">
 </p>
 
 <h1 align="center">The Hack Repair Guy's Disable Other Plugin Notices</h1>
