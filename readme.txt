@@ -7,6 +7,7 @@ Requires PHP: 7.4
 Stable tag: 2.5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Support link: https://github.com/hackrepair/disable-other-plugin-notices/discussions
 
 Groups admin notices from other plugins and themes into one collapsed panel, while WordPress core notices stay where they are.
 
@@ -48,6 +49,16 @@ Four filters are available:
 3. That is all. Grouping is active immediately, with no configuration.
 
 To turn grouping off for your own account, open the Screen Options tab at the top right of any admin screen that has grouped notices, clear the "Group notices from other plugins and themes into one panel" checkbox, and click Apply.
+
+== Support ==
+
+For questions, ideas and community support, visit GitHub Discussions:
+https://github.com/hackrepair/disable-other-plugin-notices/discussions
+
+Report reproducible bugs through Issues:
+https://github.com/hackrepair/disable-other-plugin-notices/issues
+
+Report security concerns privately to Jim Walker at jim@hackrepair.com. Do not include credentials or sensitive site information in public posts.
 
 == Frequently Asked Questions ==
 

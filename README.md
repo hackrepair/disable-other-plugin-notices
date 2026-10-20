@@ -106,7 +106,7 @@ Yes. Network admin and user admin screens are handled alongside regular admin sc
 One user meta value per user who changes the setting. Nothing else is written to the database. Uninstalling the plugin deletes that value for every user.
 
 **How can I suggest improvements or report bugs?**
-Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
+Use [GitHub Discussions](https://github.com/hackrepair/disable-other-plugin-notices/discussions) for questions, feedback and ideas. Report reproducible bugs through [Issues](https://github.com/hackrepair/disable-other-plugin-notices/issues). Send security reports privately using the contact link below.
 
 ## Contributing
 
@@ -118,7 +118,7 @@ Run the repository tests with `php .github/tests/test-notice-collector.php` and 
 
 **[Jim Walker](https://hackrepair.com/)** — The Hack Repair Guy — author and maintainer.
 
-[Report a bug or request a feature](https://github.com/hackrepair/disable-other-plugin-notices/issues) · [Security reporting](mailto:jim%40hackrepair%2Ecom) · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee)
+[Questions, ideas and community support](https://github.com/hackrepair/disable-other-plugin-notices/discussions) · [Report a bug](https://github.com/hackrepair/disable-other-plugin-notices/issues) · [Security reporting](mailto:jim%40hackrepair%2Ecom) · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee)
 
 ## License
 
