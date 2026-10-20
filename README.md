@@ -108,15 +108,17 @@ One user meta value per user who changes the setting. Nothing else is written to
 **How can I suggest improvements or report bugs?**
 Reach out to Jim Walker, The Hack Repair Guy, by email at [jim (at) hackrepair (dot) com](mailto:jim%40hackrepair%2Ecom).
 
-## Contributors
-
-**[Jim Walker](https://hackrepair.com)** — The Hack Repair Guy — author and maintainer.
-
 ## Contributing
 
 Issues and pull requests are welcome.
 
 Run the repository tests with `php .github/tests/test-notice-collector.php` and `php .github/tests/test-updater.php`. The browser watcher test uses `jsdom`: `node .github/tests/test-banner-watcher.js`. The real `WP_Hook` test takes a WordPress checkout path: `php .github/tests/test-real-wp-hook.php /path/to/wordpress`.
+
+## Author and support
+
+**[Jim Walker](https://hackrepair.com/)** — The Hack Repair Guy — author and maintainer.
+
+[Report a bug or request a feature](https://github.com/hackrepair/disable-other-plugin-notices/issues) · [Security reporting](mailto:jim%40hackrepair%2Ecom) · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee)
 
 ## License
 
