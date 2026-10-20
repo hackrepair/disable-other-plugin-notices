@@ -6,7 +6,7 @@ body #plugin-information-title.with-banner {
     box-sizing: border-box;
     padding: 36px;
     height: 250px;
-    background-image: linear-gradient(120deg, #190f09, #402516);
+    background-image: linear-gradient(120deg, #60A5FB, #402516);
 }
 body #plugin-information-title.with-banner::before {
     content: "";
