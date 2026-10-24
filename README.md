@@ -9,7 +9,7 @@
 [![License: GPL v2+](https://img.shields.io/badge/license-GPLv2%2B-blue.svg)](LICENSE)
 [![Requires PHP: 7.4](https://img.shields.io/badge/Requires%20PHP-7.4-777bb4.svg)](https://www.php.net/)
 [![Requires WordPress: 6.7+](https://img.shields.io/badge/WordPress-6.7%2B-21759b.svg)](https://wordpress.org/)
-[![Tested up to: 7.1](https://img.shields.io/badge/Tested%20up%20to-7.1-21759b.svg)](https://wordpress.org/)
+[![Tested up to: 7.1.3](https://img.shields.io/badge/Tested%20up%20to-7.1.3-21759b.svg)](https://wordpress.org/)
 
 Every plugin thinks its notice is the important one. Open `wp-admin` on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
@@ -127,3 +127,7 @@ GPLv2 or later. See [LICENSE](LICENSE).
 ## Changelog
 
 See the **Changelog** section of [`readme.txt`](readme.txt).
+
+Compatibility update 2.5.8: Tested up to WordPress 7.1.3.
+
+Compatibility update 2.5.8: Tested up to WordPress 7.1.3.

@@ -3,12 +3,12 @@
  * Plugin Name:       The Hack Repair Guy's Disable Other Plugin Notices
  * Plugin URI:        https://github.com/hackrepair/disable-other-plugin-notices
  * Description:       Groups admin notices printed by other plugins and themes into one collapsed panel, while WordPress core notices stay exactly where they are.
- * Version:           2.5.7
+ * Version:           2.5.8
  * Author:            The Hack Repair Guy
  * Author URI:        https://hackrepair.com/
  * Update URI:        https://github.com/hackrepair/disable-other-plugin-notices
  * Requires at least: 6.7
- * Tested up to:      7.1
+ * Tested up to:      7.1.3
  * Requires PHP:      7.4
  * Text Domain:       disable-other-plugin-notices
  * Domain Path:       /languages
@@ -21,7 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'DOPN_VERSION' ) ) {
-    define( 'DOPN_VERSION', '2.5.7' );
+    define( 'DOPN_VERSION', '2.5.8' );
 }
 if ( ! defined( 'DOPN_PLUGIN_FILE' ) ) {
     define( 'DOPN_PLUGIN_FILE', __FILE__ );
