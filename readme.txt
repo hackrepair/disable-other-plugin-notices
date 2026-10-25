@@ -13,6 +13,8 @@ Groups admin notices from other plugins and themes into one collapsed panel, whi
 
 == Description ==
 
+The native View Details window includes an Other THRG Plugins guide to five other tools from The Hack Repair Guy.
+
 Every plugin thinks its notice is the important one. Open wp-admin on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
 The Hack Repair Guy's Disable Other Plugin Notices takes the notices that come from plugins and themes and puts them in one collapsed panel labeled "Other plugin notices." Nothing is deleted and nothing is silenced. The notices are still there, still complete, still dismissible, one click away in the panel. Everything else on the screen moves back up where it belongs.
