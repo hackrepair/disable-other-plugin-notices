@@ -25,3 +25,8 @@ Dependency inventory workflow passed: https://github.com/hackrepair/disable-othe
 Initial alert counts (no secret values retrieved into logs): secret alerts 0; Dependabot alerts 2. These are an initial observation; indexing and scans can update later. Zero alerts does not negate the upstream Parsedown advisories or establish that no secrets/vulnerabilities exist.
 
 Manual dispatch is additionally restricted by a job-level main-branch condition. Future checks: `python3 scripts/verify-repository-protection.py`.
+
+
+### Final main-only workflow check
+
+The main-branch-restricted workflow also passed: https://github.com/hackrepair/disable-other-plugin-notices/actions/runs/40386861565 (commit `81e84e85c585f837795a830be43a58de314eae05`). Read-only verification confirmed all expected declared package versions/Actions refs indexed. GitHub now reports two open Dependabot alerts for `erusev/parsedown`: GHSA-62m3-fc7f-jpp8 (high) and GHSA-qgpv-86r3-87fh (medium). These match the upstream-baseline advisories identified above; bundled-source applicability remains a separate review item.
