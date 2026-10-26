@@ -23,3 +23,10 @@ Run `python3 scripts/verify-security-policy.py` after pushing to verify the publ
 ## Post-push result
 
 The full read-only verifier passed against GitHub after policy commit `8081e9e7f39b5875070a431905963d5b0fdf7ff3` was pushed: the default-branch SECURITY.md matches this checkout, the published README links to it, and private vulnerability reporting returns enabled. Browser form and inbox-delivery limitations above remain unresolved; no report or email was submitted.
+
+
+## Browser follow-up completed — October 26, 2026
+
+This supersedes the earlier browser-blocked result above. The signed-in maintainer browser opened this repository's `/security/advisories/new` route successfully. The correct repository name, blank title and summary fields, and private draft-advisory visibility information were confirmed. The intermittent SSL error on Disable Other Plugin Notices cleared after one normal reload; no TLS checks were disabled.
+
+GitHub showed the **maintainer draft-advisory form**, not an independent outside reporter's view. This verifies maintainer access to the route and form only; outside-reporter access remains untested. Nothing was filled in or submitted, and no advisory/report was created. Fallback mailbox delivery and response performance remain untested. No plugin version, installed plugin, release or SVN content was changed.
