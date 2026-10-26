@@ -30,3 +30,10 @@ The full read-only verifier passed against GitHub after policy commit `8081e9e7f
 This supersedes the earlier browser-blocked result above. The signed-in maintainer browser opened this repository's `/security/advisories/new` route successfully. The correct repository name, blank title and summary fields, and private draft-advisory visibility information were confirmed. The intermittent SSL error on Disable Other Plugin Notices cleared after one normal reload; no TLS checks were disabled.
 
 GitHub showed the **maintainer draft-advisory form**, not an independent outside reporter's view. This verifies maintainer access to the route and form only; outside-reporter access remains untested. Nothing was filled in or submitted, and no advisory/report was created. Fallback mailbox delivery and response performance remain untested. No plugin version, installed plugin, release or SVN content was changed.
+
+
+## Maintainer confirmation — October 26, 2026
+
+Jim Walker confirmed directly that `jim@hackrepair.com` is the correct monitored fallback address and accepted the response targets: acknowledge within **5 business days** and provide an initial assessment or progress update within **10 business days**. These are response aims, not guaranteed repair deadlines.
+
+This is maintainer confirmation of the contact and response commitments, not a transport test. No test email was sent; actual email delivery and outside-reporter browser access remain untested. Policies already contain the confirmed address and targets, so no policy wording, plugin version or release changes are needed.
