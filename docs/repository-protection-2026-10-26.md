@@ -20,4 +20,8 @@ Archiver does not bundle that updater or parser. Its inventory is limited to ide
 
 ## Live results
 
-Pending workflow submission and read-only dependency-graph verification.
+Dependency inventory workflow passed: https://github.com/hackrepair/disable-other-plugin-notices/actions/runs/40386477408. Snapshot accepted by GitHub for tooling commit `b4e0a2feedce818a217486a40c3e6fac8f6dce24`. The full live verifier passed: secret scanning, repository push protection and Dependabot alerts are enabled, and every expected declared package/version or Actions ref is present in GitHub’s dependency graph.
+
+Initial alert counts (no secret values retrieved into logs): secret alerts 0; Dependabot alerts 2. These are an initial observation; indexing and scans can update later. Zero alerts does not negate the upstream Parsedown advisories or establish that no secrets/vulnerabilities exist.
+
+Manual dispatch is additionally restricted by a job-level main-branch condition. Future checks: `python3 scripts/verify-repository-protection.py`.
