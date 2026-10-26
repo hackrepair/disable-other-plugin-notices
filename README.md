@@ -118,7 +118,7 @@ Run the repository tests with `php .github/tests/test-notice-collector.php` and 
 
 **[Jim Walker](https://hackrepair.com/)** — The Hack Repair Guy — author and maintainer.
 
-[Questions, ideas and community support](https://github.com/hackrepair/disable-other-plugin-notices/discussions) · [Report a bug](https://github.com/hackrepair/disable-other-plugin-notices/issues) · [Security reporting](mailto:jim%40hackrepair%2Ecom) · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee)
+[Questions, ideas and community support](https://github.com/hackrepair/disable-other-plugin-notices/discussions) · [Report a bug](https://github.com/hackrepair/disable-other-plugin-notices/issues) · [Security reporting](SECURITY.md) · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee)
 
 ## License
 
