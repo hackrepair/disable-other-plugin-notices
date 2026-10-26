@@ -18,3 +18,8 @@ The fallback address is the existing maintainer contact; no email was sent and i
 ## Repeat
 
 Run `python3 scripts/verify-security-policy.py` after pushing to verify the published default-branch policy, README link and live feature setting. Complete the signed-in browser and separately authorized mailbox checks described in `security-reporting-verification.md` when available. Record failures as failures; do not equate a document check with vulnerability assessment or inbox delivery.
+
+
+## Post-push result
+
+The full read-only verifier passed against GitHub after policy commit `8081e9e7f39b5875070a431905963d5b0fdf7ff3` was pushed: the default-branch SECURITY.md matches this checkout, the published README links to it, and private vulnerability reporting returns enabled. Browser form and inbox-delivery limitations above remain unresolved; no report or email was submitted.
