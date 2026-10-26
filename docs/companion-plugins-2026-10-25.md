@@ -10,3 +10,8 @@ Verification: shared PHPCS and `php tests/companion-plugins.php` pass for this c
 ## 2.5.9 release preparation — October 25, 2026
 
 User approved packaging and publication for the five GitHub-updated plugins. Plugin Archiver is explicitly excluded from this release pass. Version headers/constants, stable tag, README and release notes are aligned at 2.5.9. Release checks and publication results follow below.
+
+
+## 2.5.9 published and verified — October 25, 2026
+
+Published: https://github.com/hackrepair/disable-other-plugin-notices/releases/tag/v2.5.9. Version metadata, ZIP and published digest agree. Real Zendogs updater discovery/install, retained settings/activation, installed file hashes and native View Details verified. All local checks passed; CI scope and hashes are recorded in `docs/release-verification-2.5.9.md`. Older packages/releases retained. Plugin Archiver was excluded from this release pass.
