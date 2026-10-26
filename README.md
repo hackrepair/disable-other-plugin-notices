@@ -128,6 +128,6 @@ GPLv2 or later. See [LICENSE](LICENSE).
 
 See the **Changelog** section of [`readme.txt`](readme.txt).
 
-Compatibility update 2.5.8: Tested up to WordPress 7.1.3.
+Compatibility update 2.5.9: Tested up to WordPress 7.1.3.
 
-Compatibility update 2.5.8: Tested up to WordPress 7.1.3.
+Compatibility update 2.5.9: Tested up to WordPress 7.1.3.
