@@ -16,9 +16,9 @@ $args = (object) array('slug'=>'disable-other-plugin-notices');
 $info = (object) array('version'=>'9.9.9','banners'=>array('high'=>'official-banner'),'sections'=>array('description'=>'Keep description','changelog'=>'Keep changelog'));
 $out = $fn($info,'plugin_information',$args);
 $html = $out->sections['other_THRG_plugins'] ?? '';
-if (substr_count($html,'<h3>')!==5 || strpos($html,'<h3>Disable Other Plugin Notices</h3>')!==false || $out->sections['description']!=='Keep description' || $out->sections['changelog']!=='Keep changelog') { throw new RuntimeException('Five companions, self-exclusion or original sections failed.'); }
+if (substr_count($html,'<h3>')!==6 || strpos($html,'<h3>Disable Other Plugin Notices</h3>')!==false || $out->sections['description']!=='Keep description' || $out->sections['changelog']!=='Keep changelog') { throw new RuntimeException('Six companions, self-exclusion or original sections failed.'); }
 preg_match_all('/<a href="([^"]+)"/',$html,$matches);
-if (count(array_unique($matches[1]))!==5 || strpos($html,'github.com/hackrepair/hackrepairpluginarchiver')!==false) { throw new RuntimeException('Duplicate or incorrect destination.'); }
+if (count(array_unique($matches[1]))!==7 || strpos($html,'github.com/hackrepair/hackrepairpluginarchiver')!==false || strpos($html,'https://github.com/hackrepair/wp-bunker')===false || strpos($html,'https://hackrepair.com/donations/buy-jim-a-coffee')===false) { throw new RuntimeException('Duplicate or incorrect destination.'); }
 if ('disable-other-plugin-notices'!=='hackrepair-plugin-archiver' && strpos($html,'https://wordpress.org/plugins/hackrepair-plugin-archiver/')===false) { throw new RuntimeException('Archiver must link to WordPress.org.'); }
 $again = $fn($out,'plugin_information',$args);
 if ($again->sections['other_THRG_plugins']!==$html) { throw new RuntimeException('Repeated filters duplicate content.'); }
@@ -30,4 +30,4 @@ foreach (array(false,null,array(),(object)array('errors'=>array())) as $invalid)
 $wrong = (object) array('sections'=>array('description'=>'Other action'));
 if ($fn($wrong,'query_plugins',$args)!==$wrong || isset($wrong->sections['other_THRG_plugins'])) { throw new RuntimeException('Other action modified.'); }
 if ('disable-other-plugin-notices'==='hackrepair-plugin-archiver' && (!in_array($fn,$GLOBALS['hooks']['plugins_api_result']??array(),true) || $out->banners['high']!=='official-banner' || $out->version!=='9.9.9')) { throw new RuntimeException('WordPress.org hook or metadata preservation failed.'); }
-echo "PASS disable-other-plugin-notices: five distinct companions, WordPress.org destination, self-exclusion, metadata, idempotence and isolation.\n";
+echo "PASS disable-other-plugin-notices: six distinct companions plus a donation link, WordPress.org destination, self-exclusion, metadata, idempotence and isolation.\n";

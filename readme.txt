@@ -13,7 +13,7 @@ Groups admin notices from other plugins and themes into one collapsed panel, whi
 
 == Description ==
 
-The native View Details window includes an Other THRG Plugins guide to five other tools from The Hack Repair Guy.
+The native View Details window includes an Other THRG Plugins guide to six other tools from The Hack Repair Guy.
 
 Every plugin thinks its notice is the important one. Open wp-admin on a busy site and the actual page starts three screens down, under review requests, upgrade offers, setup wizards, and license reminders.
 
