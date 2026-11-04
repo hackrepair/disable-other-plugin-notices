@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner-1544x500.png" alt="Disable Other Plugin Notices: groups plugin admin notices into one collapsed panel" width="772" height="250">
+  <img src="docs/img/readme-banner.png" alt="Disable Other Plugin Notices: groups plugin admin notices into one collapsed panel" width="772">
 </p>
 
 <h1 align="center">The Hack Repair Guy's Disable Other Plugin Notices</h1>
