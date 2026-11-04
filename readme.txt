@@ -4,7 +4,7 @@ Tags: admin notices, notices, dashboard, admin, clutter
 Requires at least: 6.7
 Tested up to: 7.1.3
 Requires PHP: 7.4
-Stable tag: 2.5.9
+Stable tag: 2.5.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/disable-other-plugin-notices/discussions
@@ -126,6 +126,9 @@ If you found this plugin helpful, please [buy Jim a cup of coffee?](https://hack
 Questions and Feedback: For questions, ideas, or help with the plugin, [visit GitHub Discussions](https://github.com/hackrepair/disable-other-plugin-notices/discussions).
 
 == Changelog ==
+
+= 2.5.10 =
+* The Other THRG Plugins tab in View Details now lists Bunker and Stickies and ends with a donation note.
 
 = 2.5.9 =
 * Expanded Other THRG Plugins in View Details to show five companion tools, excluding the current plugin.
